@@ -1,5 +1,7 @@
 package com.goormthon.backend.service;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,13 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goormthon.backend.dto.req.AddPosterReq;
-import com.goormthon.backend.dto.req.UpdatePosterReq;
 import com.goormthon.backend.entity.Location;
 import com.goormthon.backend.entity.Poster;
 import com.goormthon.backend.entity.User;
 import com.goormthon.backend.repository.LocationRepository;
 import com.goormthon.backend.repository.PosterRepository;
 import com.goormthon.backend.repository.UserRepository;
+import com.goormthon.backend.utils.FileUtils;
 
 import jakarta.transaction.Transactional;
 
@@ -36,18 +38,20 @@ public class PosterService {
   }
   
   @Transactional
-  public void add(AddPosterReq data, MultipartFile img){
+  public void add(AddPosterReq data, MultipartFile img) throws IOException{
     Location location = locationRepository.findByLatitudeAndLongtitude(data.getLatitude(), data.getLongitude()).orElseThrow();
     User user = userRepository.findById(data.getUserId()).orElseThrow();
+    data.setImg(FileUtils.convertToBase64(img));
+    
     posterRepository.save(Poster.of(data,user, location));
   }
 
-  public void update(UpdatePosterReq data, MultipartFile img){
-    Poster poster = posterRepository.findById(data.getId()).orElseThrow();
-    Location location = locationRepository.findByLatitudeAndLongtitude(data.get).;
-    User user = userRepository.findById(data.getUserId()).orElseThrow();
-    posterRepository.save(Poster.of(data,user, ));
-  }
+  // public void update(UpdatePosterReq data, MultipartFile img){
+  //   Poster poster = posterRepository.findById(data.getId()).orElseThrow();
+  //   Location location = locationRepository.findByLatitudeAndLongtitude(data.get).;
+  //   User user = userRepository.findById(data.getUserId()).orElseThrow();
+  //   posterRepository.save(Poster.of(data,user, ));
+  // }
 
   public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size){
     Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());

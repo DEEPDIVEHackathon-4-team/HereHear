@@ -12,6 +12,7 @@ public class AddPosterReq {
   private Category category;
   private String title;
   private Long userId;
+  private String img;
   private String contents;
   private Double latitude;
   private Double longitude;

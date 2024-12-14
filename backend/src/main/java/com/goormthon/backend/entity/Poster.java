@@ -87,5 +87,7 @@ public class Poster {
     .user(user)
     .build();
 	}
+  // public void update(){
 
+  // }
 }
