@@ -1,16 +1,18 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
 import { selectLocationState } from "../../recoil/locationState";
 
-export default function Content() {
+export default function Content({ onOpenMap }: { onOpenMap: () => void }) {
   const [selectedCategory, setSelectedCategory] = useState("카테고리 선택");
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const apiClient = axios.create({
+    baseURL: import.meta.env.VITE_API_BASE_URL,
+  });
   const categories = [
     { label: "사건사고", value: "ACCIDENT" },
     { label: "동네이벤트", value: "EVENT" },
@@ -50,22 +52,25 @@ export default function Content() {
       const postData = {
         category: selectedCategory,
         title,
-        userId: 0, // 실제 사용자 ID로 교체
+        userId: 1, // 실제 사용자 ID로 교체
         contents,
         latitude: location.latitude,
         longitude: location.longitude,
       };
 
       formData.append(
-        "data",
+        "request",
         new Blob([JSON.stringify(postData)], { type: "application/json" })
       );
 
-      if (uploadedImage) {
-        formData.append("file", uploadedImage);
-      }
+    // 파일 키는 항상 추가 (없으면 빈 Blob 사용)
+    if (uploadedImage) {
+      formData.append("file", uploadedImage);
+    } else {
+      formData.append("file", new Blob(), "empty.jpg"); // 빈 파일 추가
+    }
 
-      await axios.post("/api/v1/poster", formData, {
+      await apiClient.post(`/api/v1/poster`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -82,7 +87,7 @@ export default function Content() {
   };
 
   const handleLocationButtonClick = () => {
-    navigate("/searchmap");
+    onOpenMap();
   };
 
   return (
