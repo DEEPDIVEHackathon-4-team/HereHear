@@ -1,48 +1,75 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import BottomBar from "../components/BottomBar";
 import Header from "../components/PostList/Header";
 import PostList from "./PostList";
 import FloatingButton from "../components/Board/FloatingButton";
 
+interface PostData {
+  category: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  commentCount: number;
+  userId: number;
+  nickname: string;
+  city: string;
+}
+
 export default function Board() {
   const navigate = useNavigate();
+  const [posts, setPosts] = useState<PostData[]>([]); // 초기값을 빈 배열로 설정
+  const [isLoading, setIsLoading] = useState(false);
 
-  // 게시글 예시 데이터
-  const posts = [
-    {
-      id: 1,
-      category: "공지",
-      title: "오늘 동네 행사 알림",
-      content: "오늘 오후 3시에 동네 공원에서 소규모 플리마켓을 엽니다.",
-      location: "동네1",
-      timeAgo: "3시간 전",
-      views: 120,
-      likes: 15,
-      dislikes: 2,
-      comments: 5,
-      imageUrl: "https://via.placeholder.com/80",
-    },
-    {
-      id: 2,
-      category: "공지",
-      title: "동네 회의 일정 공지",
-      content: "다음 주 수요일 오후 7시에 동네 주민 회의를 진행합니다.",
-      location: "동네2",
-      timeAgo: "1일 전",
-      views: 95,
-      likes: 8,
-      dislikes: 0,
-      comments: 3,
-      imageUrl: "https://via.placeholder.com/80",
-    },
-  ];
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          "http://172.16.108.26:8080/api/v1/poster",
+          {
+            params: {
+              category: "ACCIDENT",
+              latitude: 37,
+              longitude: 127,
+              distance: 4000,
+              page: 0,
+              size: 10,
+            },
+            headers: {
+              Accept: "*/*",
+            },
+          }
+        );
+
+        if (response.data?.data?.content) {
+          setPosts(response.data.data.content); // 유효한 데이터 설정
+        } else {
+          setPosts([]); // 응답 데이터가 없을 경우 빈 배열로 초기화
+        }
+      } catch (error) {
+        console.error("게시글을 불러오는 중 오류 발생:", error);
+        setPosts([]); // 오류 발생 시 빈 배열로 초기화
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <div className="center-content flex flex-col bg-white relative h-screen">
       <Header />
       <div className="overflow-y-auto hidden-scrollbar flex-grow">
-        {/* PostList 컴포넌트로 데이터 전달 */}
-        <PostList posts={posts} />
+        {isLoading ? (
+          <div className="flex justify-center items-center h-full">
+            <p>로딩 중...</p>
+          </div>
+        ) : (
+          <PostList posts={posts || []} />
+        )}
       </div>
       <div className="right-8 bottom-24 absolute">
         <FloatingButton onClick={() => navigate("/postcreate")} />

@@ -11,7 +11,6 @@ export default function Home() {
   const [search, setSearch] = useState("");
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
   const [bottomSheetHeight, setBottomSheetHeight] = useState("40vh");
 
   // 카테고리 배열에 아이콘 추가
@@ -22,32 +21,27 @@ export default function Home() {
     { name: "분실/실종", icon: <BsBasket3Fill /> },
   ];
 
+  // 게시글 데이터 변환 (PostList 타입에 맞게 조정)
   const posts = [
     {
-      id: 1,
-      category: "공지",
+      category: "사건사고",
       title: "오늘 동네 행사 알림",
       content: "오늘 오후 3시에 동네 공원에서 플리마켓을 엽니다.",
-      location: "동네1",
-      timeAgo: "3시간 전",
-      views: 120,
-      likes: 15,
-      dislikes: 2,
-      comments: 5,
-      imageUrl: "https://via.placeholder.com/80",
+      createdAt: "2024-12-15T12:00:00.000Z",
+      commentCount: 5,
+      userId: 1,
+      nickname: "User1",
+      city: "서울특별시",
     },
     {
-      id: 2,
-      category: "공지",
+      category: "분실/실종",
       title: "분실물 공지",
       content: "동네 카페에서 지갑을 잃어버렸습니다.",
-      location: "동네2",
-      timeAgo: "1시간 전",
-      views: 90,
-      likes: 10,
-      dislikes: 1,
-      comments: 8,
-      imageUrl: "https://via.placeholder.com/80",
+      createdAt: "2024-12-15T13:00:00.000Z",
+      commentCount: 8,
+      userId: 2,
+      nickname: "User2",
+      city: "서울특별시",
     },
   ];
 

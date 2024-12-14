@@ -1,10 +1,10 @@
 import { atom } from "recoil";
 
-export interface LocationState {
+interface LocationState {
   name: string;
   address: string;
-  x: number;
-  y: number;
+  latitude: number;
+  longitude: number;
   dong: string;
 }
 
@@ -13,18 +13,18 @@ export const locationState = atom<LocationState>({
   default: {
     name: "",
     address: "",
-    x: 0,
-    y: 0,
+    latitude: 0,
+    longitude: 0,
     dong: "",
   },
 });
-export const selectLocationState = atom({
+export const selectLocationState = atom<LocationState>({
   key: "selectLocationState",
   default: {
     name: "",
     address: "",
-    x: 0,
-    y: 0,
+    latitude: 0,
+    longitude: 0,
     dong: "",
   },
 });

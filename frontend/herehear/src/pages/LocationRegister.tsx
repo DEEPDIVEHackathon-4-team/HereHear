@@ -28,8 +28,8 @@ export default function LocationRegister() {
     // API 요청 데이터 구성
     const requestData = {
       userId: 1, // 사용자 ID (예: 실제로는 인증 정보를 통해 가져와야 함)
-      latitude: location.y,
-      longitude: location.x,
+      latitude: location.latitude, // 수정된 부분
+      longitude: location.longitude, // 수정된 부분
       city: "서울특별시", // city: 예제 데이터 (필요 시 수정)
       district: "강남구", // district: 예제 데이터 (필요 시 수정)
       subdistrict: location.dong || "신사동", // subdistrict: 선택한 동 데이터
@@ -44,7 +44,7 @@ export default function LocationRegister() {
       );
 
       if (response.status === 200 || response.status === 201) {
-        alert(`활동지 "${location.name}`);
+        alert(`활동지 "${location.name}"가 저장되었습니다.`);
         localStorage.setItem("location", JSON.stringify(location));
         navigate("/home");
       }

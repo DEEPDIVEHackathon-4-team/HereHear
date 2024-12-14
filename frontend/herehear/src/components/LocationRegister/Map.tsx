@@ -12,8 +12,8 @@ interface MapProps {
     React.SetStateAction<{
       name: string;
       address: string;
-      x: number;
-      y: number;
+      latitude: number;
+      longitude: number;
       dong: string;
     }>
   >;
@@ -84,13 +84,13 @@ export default function Map({ search, setLocation }: MapProps) {
       geocoder.coord2Address(lng, lat, (result: any[], status: string) => {
         if (status === window.kakao.maps.services.Status.OK) {
           const address = result[0]?.address?.address_name || "";
-          const dong = result[0]?.address?.region_3depth_name || "";
+          const dong = result[0]?.address?.region_3depth_name || ""; // 기본값 설정
           setLocation({
-            name: "현재 위치",
+            name: "선택된 위치",
             address,
-            x: lng,
-            y: lat,
-            dong,
+            latitude: lat,
+            longitude: lng,
+            dong: dong || "", // undefined일 경우 빈 문자열
           });
         }
       });
@@ -111,7 +111,7 @@ export default function Map({ search, setLocation }: MapProps) {
   useEffect(() => {
     if (!map || !search) return;
 
-    // 검색어 기반 위치 업데이트
+    // 장소 검색
     const ps = new window.kakao.maps.services.Places();
     ps.keywordSearch(search, (data: any[], status: string) => {
       if (status === window.kakao.maps.services.Status.OK) {
@@ -120,10 +120,10 @@ export default function Map({ search, setLocation }: MapProps) {
 
         const position = new window.kakao.maps.LatLng(place.y, place.x);
 
-        // 지도 중심 이동
+        // 지도 중심 이동 및 마커 업데이트
         map.setCenter(position);
         if (marker) {
-          marker.setPosition(position); // 마커도 검색 위치로 이동
+          marker.setPosition(position);
         }
 
         // 좌표로 주소 변환
@@ -138,9 +138,9 @@ export default function Map({ search, setLocation }: MapProps) {
               setLocation({
                 name: place.place_name,
                 address,
-                x: parseFloat(place.x),
-                y: parseFloat(place.y),
-                dong,
+                latitude: parseFloat(place.y),
+                longitude: parseFloat(place.x),
+                dong: dong || "", // undefined일 경우 빈 문자열
               });
             }
           }
