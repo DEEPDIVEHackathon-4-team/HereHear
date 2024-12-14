@@ -1,3 +1,7 @@
+import { AiFillAlert } from "react-icons/ai";
+import { MdFestival } from "react-icons/md";
+import { RiAlertFill } from "react-icons/ri";
+import { BsBasket3Fill } from "react-icons/bs";
 import { useState } from "react";
 import BottomBar from "../components/BottomBar";
 import Map from "../components/Home/Map";
@@ -8,8 +12,16 @@ export default function Home() {
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  const categories = ["사건사고", "동네이벤트", "최근이슈", "분실/실종"];
   const [bottomSheetHeight, setBottomSheetHeight] = useState("40vh");
+
+  // 카테고리 배열에 아이콘 추가
+  const categories = [
+    { name: "사건사고", icon: <AiFillAlert /> },
+    { name: "동네이벤트", icon: <MdFestival /> },
+    { name: "최근이슈", icon: <RiAlertFill /> },
+    { name: "분실/실종", icon: <BsBasket3Fill /> },
+  ];
+
   const posts = [
     {
       id: 1,
@@ -74,9 +86,10 @@ export default function Home() {
               {categories.map((category, index) => (
                 <button
                   key={index}
-                  className="px-4 py-[5px] bg-white text-sm text-gray-700 font-medium rounded-[16px] border border-gray-300"
+                  className="flex items-center gap-1 px-[8px] py-[5px] bg-white text-[14px] text-gray-700 font-medium rounded-[16px] border border-gray-300"
                 >
-                  {category}
+                  {category.icon}
+                  {category.name}
                 </button>
               ))}
             </div>
