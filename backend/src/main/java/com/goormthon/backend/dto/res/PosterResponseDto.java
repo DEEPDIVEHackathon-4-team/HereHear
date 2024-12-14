@@ -18,11 +18,14 @@ public class PosterResponseDto {
 	private Integer commentCount;
 	private Long userId;
 	private String nickname;
-	private String city;
+	private String regionName;
+	private Double latitude;
+	private Double longitude;
 
 	@Builder(access = AccessLevel.PRIVATE)
 	private PosterResponseDto(Category category, String title, String content, LocalDateTime createdAt,
-		Integer commentCount, Long userId, String nickname, String city) {
+		Integer commentCount,
+		Long userId, String nickname, String regionName, Double latitude, Double longitude) {
 		this.category = category;
 		this.title = title;
 		this.content = content;
@@ -30,7 +33,9 @@ public class PosterResponseDto {
 		this.commentCount = commentCount;
 		this.userId = userId;
 		this.nickname = nickname;
-		this.city = city;
+		this.regionName = regionName;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	public static PosterResponseDto of(Poster poster) {
@@ -42,7 +47,10 @@ public class PosterResponseDto {
 			.commentCount(poster.getComments().size())
 			.userId(poster.getUser().getId())
 			.nickname(poster.getUser().getNickname())
-			.city(poster.getRegion().getName())
+			.latitude(poster.getLatitude())
+			.longitude(poster.getLongitude())
+			.regionName(poster.getRegion().getName())
 			.build();
 	}
+
 }

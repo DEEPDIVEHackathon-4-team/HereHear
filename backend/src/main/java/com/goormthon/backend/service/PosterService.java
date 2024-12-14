@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +29,7 @@ public class PosterService {
   private UserRepository userRepository;
 
   public Poster findById(Long id) {
-    return posterRepository.findById(id).orElseThrow();
+    return posterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 ID의 게시글"));
   }
 
   @Transactional
@@ -50,18 +49,19 @@ public class PosterService {
   // User user = userRepository.findById(data.getUserId()).orElseThrow();
   // posterRepository.save(Poster.of(data,user, ));
   // }
+  //
+  // public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size) {
+  //   Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+  //   Page<Poster> queryResult = posterRepository.findPostersWithinDistance(latitude, longitude, distance, pageable);
+  //   return queryResult;
+  // }
 
-  public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-    Page<Poster> queryResult = posterRepository.findPostersWithinDistance(latitude, longitude, distance, pageable);
-    return queryResult;
-  }
-
+  @Transactional
   public void delete(Long id) {
     posterRepository.deleteById(id);
   }
 
-  public Page<PosterResponseDto> getAllPosters(
+  public Page<PosterResponseDto> getAllPostersByCategoryOnMap(
       Category category,
       Double latitude,
       Double longitude,
@@ -74,4 +74,37 @@ public class PosterService {
     Page<Poster> posters = posterRepository.findByCategoryAndDistance(category, latitude, longitude, distance, pageable);
     return posters.map(PosterResponseDto::of);
   }
+
+  public Page<PosterResponseDto> getAllPostersOnMap(Double latitude, Double longitude, Double distance, int page, int size) {
+    // 카테고리 조건 제외한 검색
+    Page<Poster> posters = posterRepository.findPostersByLocation(latitude, longitude, distance,
+        PageRequest.of(page, size));
+    return posters.map(PosterResponseDto::of);
+  }
+
+  public Page<PosterResponseDto> getAllPostersByCategoryOnBoard(
+      Category category,
+      String regionName,
+      int page,
+      int size
+  ) {
+    Pageable pageable = PageRequest.of(page, size);
+
+    Page<Poster> posters = posterRepository.findByCategoryAndRegionName(category, regionName, pageable);
+    return posters.map(PosterResponseDto::of);
+  }
+
+  public Page<PosterResponseDto> getAllPostersOnBoard(
+      String regionName,
+      int page,
+      int size
+  ) {
+
+    Pageable pageable = PageRequest.of(page, size);
+
+    Page<Poster> posters = posterRepository.findByRegionName(regionName, pageable);
+    return posters.map(PosterResponseDto::of);
+  }
+
+
 }

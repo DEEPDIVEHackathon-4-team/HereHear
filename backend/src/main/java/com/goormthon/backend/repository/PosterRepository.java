@@ -31,4 +31,16 @@ public interface PosterRepository extends JpaRepository<Poster, Long> {
       Pageable pageable
   );
 
+  // 위치 기반 검색 (카테고리 제외)
+  @Query("SELECT p FROM Poster p WHERE (6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * " +
+      "cos(radians(p.longitude) - radians(:longitude)) + " +
+      "sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
+  Page<Poster> findPostersByLocation(@Param("latitude") Double latitude,
+      @Param("longitude") Double longitude,
+      @Param("distance") Double distance,
+      Pageable pageable);
+
+
+  Page<Poster> findByCategoryAndRegionName(Category category, String regionName, Pageable pageable);
+  Page<Poster> findByRegionName(String regionName, Pageable pageable);
 }

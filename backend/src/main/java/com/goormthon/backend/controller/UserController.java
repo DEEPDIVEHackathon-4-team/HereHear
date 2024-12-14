@@ -8,6 +8,7 @@ import com.goormthon.backend.dto.req.LocationReq;
 import com.goormthon.backend.dto.req.UserRegisterRequestDto;
 import com.goormthon.backend.dto.req.UserUpdateRequestDto;
 import com.goormthon.backend.dto.res.CommonRes;
+import com.goormthon.backend.dto.res.UserRegisterResponseDto;
 import com.goormthon.backend.dto.res.UserRes;
 import com.goormthon.backend.service.LocationService;
 import com.goormthon.backend.service.UserService;
@@ -45,8 +46,8 @@ public class UserController {
   })
   @PostMapping("")
   public CommonRes<?> addUser(@RequestBody UserRegisterRequestDto dto) {
-    UserRes userRes = userService.register(dto);
-    return new CommonRes<>(200, "SUCCESS", userRes);
+    UserRegisterResponseDto responseDto = userService.register(dto);
+    return new CommonRes<>(200, "SUCCESS", responseDto);
   }
 
   @GetMapping
