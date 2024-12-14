@@ -1,19 +1,35 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { AiFillAlert } from "react-icons/ai";
 import { MdFestival } from "react-icons/md";
 import { RiAlertFill } from "react-icons/ri";
 import { BsBasket3Fill } from "react-icons/bs";
-import { useState } from "react";
 import BottomBar from "../components/BottomBar";
 import Map from "../components/Home/Map";
 import PostList from "./PostList";
 
+interface PostData {
+  id: number;
+  category: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  commentCount: number;
+  userId: number;
+  nickname: string;
+  city: string;
+  latitude: number;
+  longitude: number;
+}
+
 export default function Home() {
   const [search, setSearch] = useState("");
+  const [posts, setPosts] = useState<PostData[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]); // 필터링된 게시물
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [bottomSheetHeight, setBottomSheetHeight] = useState("40vh");
 
-  // 카테고리 배열에 아이콘 추가
   const categories = [
     { name: "사건사고", icon: <AiFillAlert /> },
     { name: "동네이벤트", icon: <MdFestival /> },
@@ -21,32 +37,60 @@ export default function Home() {
     { name: "분실/실종", icon: <BsBasket3Fill /> },
   ];
 
-  // 게시글 데이터 변환 (PostList 타입에 맞게 조정)
-  const posts = [
-    {
-      category: "사건사고",
-      title: "오늘 동네 행사 알림",
-      content: "오늘 오후 3시에 동네 공원에서 플리마켓을 엽니다.",
-      createdAt: "2024-12-15T12:00:00.000Z",
-      commentCount: 5,
-      userId: 1,
-      nickname: "User1",
-      city: "서울특별시",
-    },
-    {
-      category: "분실/실종",
-      title: "분실물 공지",
-      content: "동네 카페에서 지갑을 잃어버렸습니다.",
-      createdAt: "2024-12-15T13:00:00.000Z",
-      commentCount: 8,
-      userId: 2,
-      nickname: "User2",
-      city: "서울특별시",
-    },
-  ];
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get(
+          "http://172.16.108.26:8080/api/v1/poster",
+          {
+            params: {
+              category: "ACCIDENT",
+              latitude: 37,
+              longitude: 127,
+              distance: 4000,
+              page: 0,
+              size: 10,
+            },
+            headers: {
+              Accept: "*/*",
+            },
+          }
+        );
+        if (response.data?.data?.content) {
+          setPosts(response.data.data.content); // 받아온 데이터 설정
+        } else {
+          setPosts([]); // 데이터가 없을 경우 빈 배열 설정
+        }
+      } catch (error) {
+        console.error("게시물 데이터를 불러오는 중 오류 발생:", error);
+        setPosts([]); // 오류 발생 시 빈 배열로 초기화
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    const keyword = e.target.value;
+    setSearch(keyword);
+
+    // 검색어로 게시물 필터링
+    const filtered = posts.filter(
+      (post) =>
+        post.title.includes(keyword) ||
+        post.content.includes(keyword) ||
+        post.city.includes(keyword)
+    );
+    setFilteredPosts(filtered);
+  };
+
+  const handlePinClick = (latitude: number, longitude: number) => {
+    // 핀 클릭 시 해당 위치의 게시물만 필터링
+    const locationPosts = posts.filter(
+      (post) => post.latitude === latitude && post.longitude === longitude
+    );
+    setFilteredPosts(locationPosts);
+    setIsBottomSheetOpen(true);
   };
 
   const closeBottomSheet = () => {
@@ -56,7 +100,7 @@ export default function Home() {
   };
 
   const expandBottomSheet = () => {
-    setBottomSheetHeight("75vh"); // 화면 전체 높이로 확장
+    setBottomSheetHeight("75vh");
   };
 
   return (
@@ -94,10 +138,10 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Map
             search={search}
-            onPinClick={(locationName) => {
-              setSelectedLocation(locationName);
-              setIsBottomSheetOpen(true);
-            }}
+            posts={posts}
+            onPinClick={(latitude, longitude) =>
+              handlePinClick(latitude, longitude)
+            }
           />
         </div>
 
@@ -118,7 +162,7 @@ export default function Home() {
               <button
                 className="text-gray-500 text-lg"
                 onClick={(e) => {
-                  e.stopPropagation(); // 바텀시트 클릭 이벤트와 겹치지 않도록 방지
+                  e.stopPropagation();
                   closeBottomSheet();
                 }}
               >
@@ -126,7 +170,7 @@ export default function Home() {
               </button>
             </div>
             <div className="max-h-[60vh] overflow-y-auto">
-              <PostList posts={posts} />
+              <PostList posts={filteredPosts.length ? filteredPosts : posts} />
             </div>
           </div>
         )}

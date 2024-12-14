@@ -27,13 +27,11 @@ export default function Board() {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "http://172.16.108.26:8080/api/v1/poster",
+          "http://172.16.108.26:8080/api/v1/poster/board",
           {
             params: {
               category: "ACCIDENT",
-              latitude: 37,
-              longitude: 127,
-              distance: 4000,
+              regionName: "경기도 성남시 분당구 서현동",
               page: 0,
               size: 10,
             },
