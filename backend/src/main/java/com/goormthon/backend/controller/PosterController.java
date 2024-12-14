@@ -4,27 +4,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goormthon.backend.dto.req.AddPosterReq;
-import com.goormthon.backend.dto.req.CommentRequestDto;
-import com.goormthon.backend.dto.req.UpdatePosterReq;
-import com.goormthon.backend.dto.res.CommentResponseDto;
 import com.goormthon.backend.dto.res.CommonRes;
-import com.goormthon.backend.entity.Comment;
 import com.goormthon.backend.entity.Poster;
-import com.goormthon.backend.service.CommentService;
 import com.goormthon.backend.service.PosterService;
 
 import java.io.IOException;
-import java.util.List;
 import com.goormthon.backend.entity.Category;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
