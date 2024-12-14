@@ -28,6 +28,7 @@ public class PosterResponseDto {
 		this.content = content;
 		this.createdAt = createdAt;
 		this.commentCount = commentCount;
+		this.userId = userId;
 		this.nickname = nickname;
 		this.city = city;
 	}
