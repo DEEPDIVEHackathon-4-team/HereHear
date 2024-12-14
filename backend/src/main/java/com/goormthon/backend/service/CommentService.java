@@ -14,6 +14,7 @@ import com.goormthon.backend.repository.CommentRepository;
 import com.goormthon.backend.repository.PosterRepository;
 import com.goormthon.backend.repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service

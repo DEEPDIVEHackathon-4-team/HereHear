@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.goormthon.backend.dto.req.UserRegisterRequestDto;
 import com.goormthon.backend.dto.req.UserUpdateRequestDto;
+import com.goormthon.backend.dto.res.UserRegisterResponseDto;
 import com.goormthon.backend.dto.res.UserRes;
 import com.goormthon.backend.entity.User;
 import com.goormthon.backend.repository.UserRepository;
@@ -33,7 +34,7 @@ public class UserService {
   }
 
   @Transactional
-  public UserRes register(UserRegisterRequestDto dto) {
+  public UserRegisterResponseDto register(UserRegisterRequestDto dto) {
     if (userRepository.existsByNickname(dto.getNickname())) {
       throw new IllegalArgumentException("중복된 닉네임입니다.");
     }
@@ -43,7 +44,7 @@ public class UserService {
 
     User user = User.of(dto);
     userRepository.save(user);
-    return UserRes.of(user);
+    return UserRegisterResponseDto.of(user);
   }
 
   public UserRes update(UserUpdateRequestDto dto) {

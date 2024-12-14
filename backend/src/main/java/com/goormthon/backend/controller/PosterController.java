@@ -34,31 +34,50 @@ public class PosterController {
   @Autowired
   private PosterService posterService;
 
-  @GetMapping("")
-  public CommonRes<Page<PosterResponseDto>> getAllPoster(@RequestParam Category category,
+  @GetMapping("/map")
+  public CommonRes<Page<PosterResponseDto>> getAllPosterOnMap(
+      @RequestParam(required = false) Category category,
       @RequestParam(required = true) Double latitude,
       @RequestParam(required = true) Double longitude,
       @RequestParam(required = true) Double distance,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
 
-    Page<PosterResponseDto> posters = posterService.getAllPosters(category, latitude, longitude, distance, page, size);
+    Page<PosterResponseDto> posters;
+    if (category != null) {
+      // 카테고리가 있을 경우
+      posters = posterService.getAllPostersByCategoryOnMap(category, latitude, longitude, distance, page, size);
+    } else {
+      // 카테고리가 없을 경우
+      posters = posterService.getAllPostersOnMap(latitude, longitude, distance, page, size);
+    }
+
+    return new CommonRes<>(200, "SUCCESS", posters);
+  }
+
+  @GetMapping("/board")
+  public CommonRes<Page<PosterResponseDto>> getAllPosterOnBoard(
+      @RequestParam(required = false) Category category,
+      @RequestParam(required = true) String regionName,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    Page<PosterResponseDto> posters;
+    if (category != null) {
+      // 카테고리가 있을 경우
+      posters = posterService.getAllPostersByCategoryOnBoard(category, regionName, page, size);
+    } else {
+      // 카테고리가 없을 경우
+      posters = posterService.getAllPostersOnBoard(regionName, page, size);
+    }
+
     return new CommonRes<>(200, "SUCCESS", posters);
   }
 
 
-
   @GetMapping("/search")
   public CommonRes<Poster> getPoster(@RequestParam Long id) {
-    CommonRes<Poster> res = null;
-    try {
-      Poster data = posterService.findById(id);
-      ;
-      res = new CommonRes<>(200, "SUCCESS", data);
-    } catch (Exception e) {
-      res = new CommonRes<>(400, "BAD REQUEST", null);
-    }
-    return res;
+    Poster data = posterService.findById(id);
+    return new CommonRes<>(200, "SUCCESS", data);
   }
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
