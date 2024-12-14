@@ -30,7 +30,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("")
+    @GetMapping
     public CommonRes<?> getUser(@RequestParam Long id) {
       try {
         UserRes data = userService.userFindById(id);
@@ -40,7 +40,7 @@ public class UserController {
       }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public CommonRes<?> getAllUsers() {
         List<UserRes> users = userService.userFindAll();
         return new CommonRes<>(200, "SUCCESS", users);
@@ -81,7 +81,7 @@ public class UserController {
 
         return entity;
     }
-    @DeleteMapping("")
+    @DeleteMapping("/location")
     public String deleteLocation(@RequestParam String param) {
         return new String();
     }
