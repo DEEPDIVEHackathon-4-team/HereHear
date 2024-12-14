@@ -28,7 +28,7 @@ public class UserRes {
         .id(user.getId())
         .nickname(user.getNickname())
         .location(user.getLocation())
-        .region(user.getRegions())
+        .region(user.getRegion())
         .hearRate(user.getHeartRate())
         .build();
   }

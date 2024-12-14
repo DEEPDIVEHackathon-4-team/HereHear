@@ -3,6 +3,7 @@ package com.goormthon.backend.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.goormthon.backend.dto.req.UserRegisterRequestDto;
 import com.goormthon.backend.dto.req.UserReq;
 
 import jakarta.persistence.CascadeType;
@@ -55,9 +56,8 @@ public class User {
 		this.heartRate = heartRate;
 	}
 
-	public static User of(UserReq dto) {
+	public static User of(UserRegisterRequestDto dto) {
 		return User.builder()
-        .id(dto.getId())
         .nickname(dto.getNickname())
         .email(dto.getEmail())
         .password(dto.getPassword())

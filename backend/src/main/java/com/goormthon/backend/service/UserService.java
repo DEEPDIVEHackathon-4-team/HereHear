@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.goormthon.backend.dto.req.UserReq;
+import com.goormthon.backend.dto.req.UserRegisterRequestDto;
 import com.goormthon.backend.dto.res.UserRes;
 import com.goormthon.backend.entity.User;
 import com.goormthon.backend.repository.UserRepository;
@@ -31,11 +31,12 @@ public class UserService {
     return UserRes.of(user);
   }
 
-  public void register(UserReq userReq) {
-
+  public void register(UserRegisterRequestDto dto) {
+    User user = User.of(dto);
+    userRepository.save(user);
   }
 
-  public void userDeleteById(Long id){
+  public void userDeleteById(Long id) {
     userRepository.deleteById(id);
   }
 
