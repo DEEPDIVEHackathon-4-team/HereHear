@@ -1,9 +1,12 @@
 package com.goormthon.backend.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.goormthon.backend.dto.req.LocationReq;
 import com.goormthon.backend.dto.req.UserRegisterRequestDto;
+import com.goormthon.backend.dto.req.UserUpdateRequestDto;
 import com.goormthon.backend.dto.res.CommonRes;
 import com.goormthon.backend.dto.res.UserRes;
 import com.goormthon.backend.service.UserService;
@@ -37,22 +40,30 @@ public class UserController {
       }
     }
 
+    @GetMapping
+    public CommonRes<?> getAllUsers() {
+        List<UserRes> users = userService.userFindAll();
+        return new CommonRes<>(200, "SUCCESS", users);
+    }
+
     @PostMapping("")
     public CommonRes<?> addUser(@RequestBody UserRegisterRequestDto dto) {
-      userService.register(dto);
-      return new CommonRes<>(200, "SUCCESS", null);
+        UserRes userRes = userService.register(dto);
+        return new CommonRes<>(200, "SUCCESS", userRes);
     }
 
-    @PutMapping("{id}")
-    public String putUser(@PathVariable String id, @RequestBody String entity) {
-        //TODO: process PUT request
-
-        return entity;
+    @PutMapping("")
+    public CommonRes<?> update(@RequestBody UserUpdateRequestDto dto) {
+        UserRes userRes = userService.update(dto);
+        return new CommonRes<>(200, "SUCCESS", userRes);
     }
+
     @DeleteMapping("")
-    public String deleteUser(@RequestParam String param) {
-        return new String();
+    public CommonRes<?> deleteUser(@RequestParam Long id) {
+        userService.userDeleteById(id);
+        return new CommonRes<>(200, "SUCCESS", null);
     }
+
 
     @GetMapping("/location")
     public String getLocation(@RequestParam String param) {

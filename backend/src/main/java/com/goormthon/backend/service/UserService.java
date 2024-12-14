@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goormthon.backend.dto.req.UserRegisterRequestDto;
+import com.goormthon.backend.dto.req.UserUpdateRequestDto;
 import com.goormthon.backend.dto.res.UserRes;
 import com.goormthon.backend.entity.User;
 import com.goormthon.backend.repository.UserRepository;
@@ -31,9 +32,18 @@ public class UserService {
     return UserRes.of(user);
   }
 
-  public void register(UserRegisterRequestDto dto) {
+  public UserRes register(UserRegisterRequestDto dto) {
     User user = User.of(dto);
     userRepository.save(user);
+    return UserRes.of(user);
+  }
+
+  public UserRes update(UserUpdateRequestDto dto) {
+    Long userId = dto.getId();
+    User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저"));
+    user.update(dto.getNickname(), dto.getEmail(), dto.getPassword());
+
+    return UserRes.of(user);
   }
 
   public void userDeleteById(Long id) {

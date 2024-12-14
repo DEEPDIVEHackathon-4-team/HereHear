@@ -3,7 +3,7 @@ package com.goormthon.backend.dto.req;
 import lombok.Getter;
 
 @Getter
-public class UserReq {
+public class UserUpdateRequestDto {
   private Long id;
   private String nickname;
   private String email;

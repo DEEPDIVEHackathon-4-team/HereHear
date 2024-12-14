@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.goormthon.backend.dto.req.UserRegisterRequestDto;
-import com.goormthon.backend.dto.req.UserReq;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
