@@ -32,7 +32,15 @@ public class UserService {
     return UserRes.of(user);
   }
 
+  @Transactional
   public UserRes register(UserRegisterRequestDto dto) {
+    if (userRepository.existsByNickname(dto.getNickname())) {
+      throw new IllegalArgumentException("중복된 닉네임입니다.");
+    }
+    if (userRepository.existsByEmail(dto.getEmail())) {
+      throw new IllegalArgumentException("중복된 이메일입니다.");
+    }
+
     User user = User.of(dto);
     userRepository.save(user);
     return UserRes.of(user);

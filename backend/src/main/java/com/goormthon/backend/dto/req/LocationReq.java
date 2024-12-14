@@ -9,5 +9,7 @@ public class LocationReq {
     private Long userId;
     private Double latitude;
     private Double longitude;
-    private Region region;
+    private String city;
+    private String district;
+    private String subdistrict;
 }

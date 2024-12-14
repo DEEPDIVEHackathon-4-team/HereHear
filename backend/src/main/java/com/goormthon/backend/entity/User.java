@@ -6,6 +6,7 @@ import java.util.List;
 import com.goormthon.backend.dto.req.UserRegisterRequestDto;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,11 +30,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickname;
-    private String email;
-    private String password;
-    private Integer heartRate;
+	@Column(nullable = false, unique = true)
+	private String nickname;
 
+	@Column(nullable = false, unique = true)
+	private String email;
+
+	@Column(nullable = false)
+	private String password;
+
+    private Integer heartRate;
 	private Double latitude;
 	private Double longitude;
 
@@ -79,5 +85,6 @@ public class User {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.region = region;
+
 	}
 }
