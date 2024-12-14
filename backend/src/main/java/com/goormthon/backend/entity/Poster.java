@@ -79,7 +79,6 @@
       this.comments = comments;
     }
 
-
     public static Poster of(AddPosterReq posterReq, String img, User user) {
       return Poster.builder()
           .category(posterReq.getCategory())

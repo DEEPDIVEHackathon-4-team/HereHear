@@ -4,12 +4,17 @@
   import org.springframework.web.multipart.MultipartFile;
 
   import com.goormthon.backend.dto.req.AddPosterReq;
+  import com.goormthon.backend.dto.req.CommentRequestDto;
   import com.goormthon.backend.dto.req.UpdatePosterReq;
+  import com.goormthon.backend.dto.res.CommentResponseDto;
   import com.goormthon.backend.dto.res.CommonRes;
+  import com.goormthon.backend.entity.Comment;
   import com.goormthon.backend.entity.Poster;
+  import com.goormthon.backend.service.CommentService;
   import com.goormthon.backend.service.PosterService;
 
   import java.io.IOException;
+  import java.util.List;
 
   import org.springframework.beans.factory.annotation.Autowired;
   import org.springframework.data.domain.Page;
@@ -33,6 +38,10 @@
     
     @Autowired
     private PosterService posterService;
+
+    @Autowired
+    private CommentService commentService;
+
 
     @GetMapping("")
     public CommonRes<Page<Poster>> getAllPoster(@RequestParam String tag, @RequestParam(required = true) Double latitude,@RequestParam(required = true) Double longitude,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") Integer size) {
@@ -89,29 +98,30 @@
         }
         return res;
     }
-    
+
     @GetMapping("/comment")
-    public String getComment(@RequestParam String param) {
-        return new String();
+    public CommonRes<?> getComment(@RequestParam Long postId) {
+      List<CommentResponseDto> comments = commentService.findByPostId(postId);
+      return new CommonRes<>(200, "SUCESS", comments);
     }
 
     @PostMapping("/comment")
-    public String addComment(@RequestBody String entity) {
-        //TODO: process POST request
-        return "";
+    public CommonRes<?> addComment(@RequestBody CommentRequestDto dto) {
+      CommentResponseDto comment = commentService.saveComment(dto);
+      return new CommonRes<>(200, "SUCESS", comment);
     }
     
-    @PutMapping("/comment")
-    public String updateComment(@PathVariable String id, @RequestBody String entity) {
-        //TODO: process PUT request
-        
-        return "";
-    }
-  
-    @DeleteMapping("/comment")
-    public String deleteComment(@PathVariable String id) {
-        //TODO: process PUT request
-        
-        return "";
-    }
+    // @PutMapping("/comment")
+    // public String updateComment(@PathVariable String id, @RequestBody String entity) {
+    //     //TODO: process PUT request
+    //
+    //     return "";
+    // }
+    //
+    // @DeleteMapping("/comment")
+    // public String deleteComment(@PathVariable String id) {
+    //     //TODO: process PUT request
+    //
+    //     return "";
+    // }
   }

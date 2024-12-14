@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.goormthon.backend.dto.req.CommentRequestDto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -29,6 +31,8 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String content;
+
 	@Column(nullable = false)
 	@CreatedDate
 	private LocalDateTime createdAt;
@@ -42,9 +46,18 @@ public class Comment {
 	private User user;
 
 	@Builder(access = AccessLevel.PRIVATE)
-	private Comment(LocalDateTime createdAt, Poster poster, User user) {
-		this.createdAt = createdAt;
+	private Comment(Poster poster, User user, String content) {
 		this.poster = poster;
 		this.user = user;
+		this.content = content;
 	}
+
+	public static Comment of(CommentRequestDto dto, Poster poster, User user) {
+		return Comment.builder()
+			.poster(poster)
+			.user(user)
+			.content(dto.getContent())
+			.build();
+	}
+
 }
