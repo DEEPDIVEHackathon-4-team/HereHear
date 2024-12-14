@@ -48,12 +48,17 @@ public class User {
     private List<Comment> comments = new ArrayList<>();
 
 	@Builder(access = AccessLevel.PRIVATE)
-	private User(Long id, String email, String nickname, String password, Integer heartRate) {
-		this.id = id;
-		this.email = email;
+	private User(String nickname, String email, String password, Integer heartRate, Double latitude, Double longitude,
+		Region region, List<Poster> posters, List<Comment> comments) {
 		this.nickname = nickname;
+		this.email = email;
 		this.password = password;
 		this.heartRate = heartRate;
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.region = region;
+		this.posters = posters;
+		this.comments = comments;
 	}
 
 	public static User of(UserRegisterRequestDto dto) {
@@ -69,4 +74,10 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+	public void updateLocation(Double latitude, Double longitude, Region region) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+		this.region = region;
+	}
 }

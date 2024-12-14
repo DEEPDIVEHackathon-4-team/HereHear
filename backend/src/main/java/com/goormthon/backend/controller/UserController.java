@@ -66,27 +66,10 @@ public class UserController {
         return new CommonRes<>(200, "SUCCESS", null);
     }
 
-
-    // @GetMapping("/location")
-    // public String getLocation(@RequestParam String param) {
-    //     return new String();
-    // }
-
     @PostMapping("/location")
     public CommonRes<?> addLocation(@RequestBody LocationReq dto) {
-        // locationService.locationSave(dto);
-        return new CommonRes<>(200, "SUCCESS", null);
+        UserRes userRes = locationService.userLocationSave(dto);
+        return new CommonRes<>(200, "SUCCESS", userRes);
     }
-
-    @PutMapping("{id}")
-    public String putLocation(@PathVariable String id, @RequestBody String entity) {
-        //TODO: process PUT request
-
-        return entity;
-    }
-    // @DeleteMapping("/location")
-    // public String deleteLocation(@RequestParam String param) {
-    //     return new String();
-    // }
   
 }
