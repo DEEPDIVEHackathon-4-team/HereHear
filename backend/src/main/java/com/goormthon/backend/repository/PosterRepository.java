@@ -10,17 +10,18 @@ import org.springframework.stereotype.Repository;
 import com.goormthon.backend.entity.Poster;
 
 @Repository
-public interface PosterRepository extends JpaRepository<Poster, Long>{
-  @Query("SELECT p FROM Poster p " +
-  "JOIN p.location l " +
-  "WHERE (6371 * ACOS(COS(RADIANS(:latitude)) * COS(RADIANS(l.latitude)) " +
-  "* COS(RADIANS(l.longitude) - RADIANS(:longitude)) + SIN(RADIANS(:latitude)) * SIN(RADIANS(l.latitude)))) <= :distance")
-  Page<Poster> findPostersWithinDistance(@Param("latitude") Double latitude,
-                                  @Param("longitude") Double longitude,
-                                  @Param("distance") Double distance,
-                                  Pageable pageable);
+public interface PosterRepository extends JpaRepository<Poster, Long> {
 
-
-    
-  
+    @Query("""
+        SELECT p FROM Poster p
+        WHERE (6371 * ACOS(
+            COS(RADIANS(:latitude)) * COS(RADIANS(p.latitude)) *
+            COS(RADIANS(p.longitude) - RADIANS(:longitude)) +
+            SIN(RADIANS(:latitude)) * SIN(RADIANS(p.latitude))
+        )) <= :distance
+    """)
+    Page<Poster> findPostersWithinDistance(@Param("latitude") Double latitude,
+                                           @Param("longitude") Double longitude,
+                                           @Param("distance") Double distance,
+                                           Pageable pageable);
 }

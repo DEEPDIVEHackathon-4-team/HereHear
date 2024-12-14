@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddPosterReq {
+  
   private Category category;
   private String title;
   private Long userId;
