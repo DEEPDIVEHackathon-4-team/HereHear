@@ -10,5 +10,6 @@ import com.goormthon.backend.entity.Location;
 @Repository
 public interface LocationRepository extends JpaRepository<Location,Long>{
 
-  Optional<Location> findByLatitudeAndLongtitude(Double lat, Double lng);
+  Optional<Location> findByLatitudeAndLongitude(Double latitude, Double longitude);
+
 } 

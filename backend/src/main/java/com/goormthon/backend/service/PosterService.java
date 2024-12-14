@@ -39,7 +39,7 @@ public class PosterService {
   
   @Transactional
   public void add(AddPosterReq data, MultipartFile img) throws IOException{
-    Location location = locationRepository.findByLatitudeAndLongtitude(data.getLatitude(), data.getLongitude()).orElseThrow();
+    Location location = locationRepository.findByLatitudeAndLongitude(data.getLatitude(), data.getLongitude()).orElseThrow();
     User user = userRepository.findById(data.getUserId()).orElseThrow();
     data.setImg(FileUtils.convertToBase64(img));
     
@@ -55,7 +55,7 @@ public class PosterService {
 
   public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size){
     Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-    return posterRepository.findWithinDistance(latitude, longitude, distance, pageable);
+    return posterRepository.findPostersWithinDistance(latitude, longitude, distance, pageable);
   }
 
   public void delete(Long id){

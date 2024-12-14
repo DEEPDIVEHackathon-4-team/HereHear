@@ -45,7 +45,7 @@ public class PosterController {
       return res;
   }
 
-  @GetMapping("")
+  @GetMapping("/search")
   public CommonRes<Poster> getPoster(@RequestParam Long id) {
     CommonRes<Poster> res = null;
     try{
