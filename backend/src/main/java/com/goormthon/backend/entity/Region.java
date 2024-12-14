@@ -27,10 +27,10 @@ public class Region {
     private String district;
     private String subdistrict;
 
-    @OneToMany(mappedBy = "regions", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<User> users = new ArrayList<>();
 
-    @OneToMany(mappedBy = "regions", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "region", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Poster> posters = new ArrayList<>();
 
 	@Builder(access = AccessLevel.PRIVATE)

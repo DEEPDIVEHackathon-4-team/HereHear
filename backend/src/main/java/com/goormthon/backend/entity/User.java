@@ -37,8 +37,8 @@ public class User {
     private Location location;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "regions_id")
-    private Region regions;
+    @JoinColumn(name = "region_id")
+    private Region region;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Poster> posters = new ArrayList<>();

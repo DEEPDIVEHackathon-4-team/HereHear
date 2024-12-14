@@ -50,7 +50,7 @@ public class Poster {
 	private Location location;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "regions_id")
+	@JoinColumn(name = "region_id")
 	private Region region;
 
 	@ManyToOne(fetch = FetchType.LAZY)
