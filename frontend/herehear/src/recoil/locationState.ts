@@ -18,3 +18,13 @@ export const locationState = atom<LocationState>({
     dong: "",
   },
 });
+export const selectLocationState = atom({
+  key: "selectLocationState",
+  default: {
+    name: "",
+    address: "",
+    x: 0,
+    y: 0,
+    dong: "",
+  },
+});

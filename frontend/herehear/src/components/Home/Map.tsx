@@ -8,9 +8,10 @@ declare global {
 
 interface MapProps {
   search: string;
+  onPinClick: (locationName: string) => void; // 핀 클릭 이벤트
 }
 
-export default function Map({ search }: MapProps) {
+export default function Map({ search, onPinClick }: MapProps) {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
@@ -61,16 +62,22 @@ export default function Map({ search }: MapProps) {
           currentLocation.lat,
           currentLocation.lng
         ),
-        content: `<div style="
-          width: 15px; 
-          height: 15px; 
-          background-color: red; 
-          border-radius: 50%; 
-          border: 2px solid white;
-          box-shadow: 0 0 5px rgba(0,0,0,0.5);">
-        </div>`,
+        content: `<div style="width: 15px; height: 15px; background-color: red; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.5);"></div>`,
         zIndex: 1,
       });
+
+      // 마커 추가 및 클릭 이벤트 처리
+      const addMarkerWithClickEvent = (lat: number, lng: number, name: string) => {
+        const marker = new window.kakao.maps.Marker({
+          position: new window.kakao.maps.LatLng(lat, lng),
+          map,
+        });
+
+        // 마커 클릭 이벤트
+        window.kakao.maps.event.addListener(marker, "click", () => {
+          onPinClick(name); // 부모 컴포넌트에 위치 이름 전달
+        });
+      };
 
       if (search) {
         const ps = new window.kakao.maps.services.Places();
@@ -78,10 +85,11 @@ export default function Map({ search }: MapProps) {
           if (status === window.kakao.maps.services.Status.OK) {
             const bounds = new window.kakao.maps.LatLngBounds();
             data.forEach((place) => {
-              new window.kakao.maps.Marker({
-                map,
-                position: new window.kakao.maps.LatLng(place.y, place.x),
-              });
+              addMarkerWithClickEvent(
+                parseFloat(place.y),
+                parseFloat(place.x),
+                place.place_name
+              );
               bounds.extend(new window.kakao.maps.LatLng(place.y, place.x));
             });
 
@@ -101,7 +109,7 @@ export default function Map({ search }: MapProps) {
       script.onload = () => window.kakao.maps.load(loadKakaoMap);
       document.head.appendChild(script);
     }
-  }, [search, currentLocation]);
+  }, [search, currentLocation, onPinClick]);
 
   return (
     <div className="w-full h-full">

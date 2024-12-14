@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilValue } from "recoil";
+import { selectLocationState } from "../../recoil/locationState";
 
 export default function Content() {
   const [selectedCategory, setSelectedCategory] = useState("카테고리 선택");
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const categories = ["사건사고", "동네이벤트", "최근이슈", "분실/실종"];
   const navigate = useNavigate();
+  const location = useRecoilValue(selectLocationState);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedCategory(e.target.value);
@@ -28,12 +31,11 @@ export default function Content() {
 
   return (
     <div className="px-5 mt-5">
-      {/* 카테고리 선택 */}
       <div>
         <select
           value={selectedCategory}
           onChange={handleCategoryChange}
-          className="w-full p-3 text-sm appearance-none bg-transparent outline-none"
+          className="w-full p-1 text-[18px] appearance-none bg-transparent outline-none"
         >
           <option disabled value="카테고리 선택">
             카테고리 선택
@@ -44,36 +46,30 @@ export default function Content() {
             </option>
           ))}
         </select>
-        {/* 구분선 */}
         <div className="h-[1px] bg-gray-300 mt-2" />
       </div>
 
-      {/* 게시글 운영정책 박스 */}
       <div className="mt-5 bg-gray-200 text-sm text-gray-700 rounded-md p-4">
         <div className="font-semibold mb-1">게시글 운영정책</div>
         <div>거래관련, 명예훼손, 광고 목적의 글을 올리실 수 없어요.</div>
       </div>
 
-      {/* 제목 입력 */}
       <div className="mt-5">
         <input
           type="text"
           placeholder="제목을 입력하세요"
-          className="w-full p-3 border-b border-gray-300 outline-none text-sm"
+          className="text-[24px] w-full p-3 border-b border-gray-300 outline-none text-sm"
         />
       </div>
 
-      {/* 내용 입력 */}
       <div className="mt-5">
         <textarea
           placeholder="내용을 입력하세요"
-          className="w-full p-3 outline-none text-sm h-32"
+          className="text-[18px] w-full p-3 outline-none text-sm h-32"
         />
       </div>
 
-      {/* 사진 및 위치 추가 버튼 */}
       <div className="mt-5 flex items-center gap-3">
-        {/* 사진 추가 버튼 */}
         <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="file"
@@ -83,7 +79,6 @@ export default function Content() {
           />
           사진
         </label>
-        {/* 위치 추가 버튼 */}
         <button
           className="flex items-center gap-2"
           onClick={handleLocationButtonClick}
@@ -92,7 +87,14 @@ export default function Content() {
         </button>
       </div>
 
-      {/* 업로드된 이미지 미리보기 */}
+      {location.name && (
+        <div className="mt-5">
+          <div className="text-sm text-gray-500 mb-1">선택한 위치</div>
+          <div className="text-lg font-medium">{location.name}</div>
+          <div className="text-sm text-gray-500 mt-1">{location.address}</div>
+        </div>
+      )}
+
       {uploadedImage && (
         <div className="mt-5">
           <img

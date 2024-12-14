@@ -1,25 +1,65 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
+import axios from "axios";
 import Map from "../components/LocationRegister/Map";
 import { locationState } from "../recoil/locationState";
+
+const apiClient = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+});
 
 export default function LocationRegister() {
   const navigate = useNavigate();
   const [location, setLocation] = useRecoilState(locationState);
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const handleSave = () => {
-    if (location.name && location.address) {
-      localStorage.setItem("location", JSON.stringify(location));
-      alert(`활동지 "${location.name}" (${location.dong})가 저장되었습니다.`);
-      navigate("/home");
-    } else {
+  const handleSave = async () => {
+    if (!location.name || !location.address) {
       alert("활동지를 선택해주세요.");
+      return;
+    }
+
+    // `region` 객체에 city, district, subdistrict 추가
+    const region = {
+      city: "서울특별시", // city: 예제 데이터 (필요 시 수정)
+      district: "강남구", // district: 예제 데이터 (필요 시 수정)
+      subdistrict: location.dong || "신사동", // subdistrict: 선택한 동 데이터
+    };
+
+    // API 요청 데이터 구성
+    const requestData = {
+      userId: 1, // 사용자 ID (예: 실제로는 인증 정보를 통해 가져와야 함)
+      latitude: location.y,
+      longitude: location.x,
+      region,
+    };
+
+    try {
+      setIsLoading(true);
+      // API 요청
+      const response = await apiClient.post(
+        "/api/v1/user/location",
+        requestData
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        alert(
+          `활동지 "${location.name}" (${region.subdistrict})가 저장되었습니다.`
+        );
+        localStorage.setItem("location", JSON.stringify(location));
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("활동지 저장 중 오류 발생:", error);
+      alert("활동지 저장 중 문제가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -70,10 +110,15 @@ export default function LocationRegister() {
           style={{ bottom: "82px" }}
         >
           <button
-            className="w-full py-3 bg-blue-500 text-white font-bold rounded-md"
+            className={`w-full py-3 font-bold rounded-md ${
+              isLoading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-500 text-white"
+            }`}
             onClick={handleSave}
+            disabled={isLoading}
           >
-            저장
+            {isLoading ? "저장 중..." : "저장"}
           </button>
         </div>
       </div>
