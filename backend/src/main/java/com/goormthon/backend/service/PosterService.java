@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goormthon.backend.dto.req.AddPosterReq;
+import com.goormthon.backend.dto.res.PosterResponseDto;
+import com.goormthon.backend.entity.Category;
 import com.goormthon.backend.entity.Poster;
 import com.goormthon.backend.entity.User;
 import com.goormthon.backend.repository.PosterRepository;
@@ -57,5 +59,19 @@ public class PosterService {
 
   public void delete(Long id) {
     posterRepository.deleteById(id);
+  }
+
+  public Page<PosterResponseDto> getAllPosters(
+      Category category,
+      Double latitude,
+      Double longitude,
+      Double distance,
+      int page,
+      int size
+  ) {
+    Pageable pageable = PageRequest.of(page, size);
+
+    Page<Poster> posters = posterRepository.findByCategoryAndDistance(category, latitude, longitude, distance, pageable);
+    return posters.map(PosterResponseDto::of);
   }
 }

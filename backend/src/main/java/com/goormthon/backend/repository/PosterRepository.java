@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.goormthon.backend.entity.Category;
 import com.goormthon.backend.entity.Poster;
 
 @Repository
@@ -17,4 +18,17 @@ public interface PosterRepository extends JpaRepository<Poster, Long> {
       @Param("longitude") Double longitude,
       @Param("distance") Double distance,
       Pageable pageable);
+
+  @Query("SELECT p FROM Poster p WHERE p.category = :category AND " +
+      "(6371 * acos(cos(radians(:latitude)) * cos(radians(p.latitude)) * " +
+      "cos(radians(p.longitude) - radians(:longitude)) + " +
+      "sin(radians(:latitude)) * sin(radians(p.latitude)))) <= :distance")
+  Page<Poster> findByCategoryAndDistance(
+      @Param("category") Category category,
+      @Param("latitude") Double latitude,
+      @Param("longitude") Double longitude,
+      @Param("distance") Double distance,
+      Pageable pageable
+  );
+
 }

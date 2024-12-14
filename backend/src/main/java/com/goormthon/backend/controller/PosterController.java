@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.goormthon.backend.dto.req.AddPosterReq;
 import com.goormthon.backend.dto.res.CommonRes;
+import com.goormthon.backend.dto.res.PosterResponseDto;
 import com.goormthon.backend.entity.Poster;
 import com.goormthon.backend.service.PosterService;
 
@@ -34,22 +35,18 @@ public class PosterController {
   private PosterService posterService;
 
   @GetMapping("")
-  public CommonRes<Page<Poster>> getAllPoster(@RequestParam Category category,
+  public CommonRes<Page<PosterResponseDto>> getAllPoster(@RequestParam Category category,
       @RequestParam(required = true) Double latitude,
       @RequestParam(required = true) Double longitude,
       @RequestParam(required = true) Double distance,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
-    CommonRes<Page<Poster>> res = null;
-    try {
-      Page<Poster> data = posterService.findAll(latitude, longitude, distance, page, size);
-      res = new CommonRes<>(200, "SUCCESS", data);
-    } catch (Exception e) {
-      e.printStackTrace();
-      res = new CommonRes<>(400, "BAD REQUEST", null);
-    }
-    return res;
+
+    Page<PosterResponseDto> posters = posterService.getAllPosters(category, latitude, longitude, distance, page, size);
+    return new CommonRes<>(200, "SUCCESS", posters);
   }
+
+
 
   @GetMapping("/search")
   public CommonRes<Poster> getPoster(@RequestParam Long id) {
