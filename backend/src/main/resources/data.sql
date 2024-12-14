@@ -30,5 +30,6 @@ VALUES
 (3, 'Poster 3', 'Contents for Poster 3', 8, 'image3.jpg', CURRENT_TIMESTAMP, 37.579621, 126.977041, 1, 3, 'RECENT_ISSUE'),
 (4, 'Poster 4', 'Contents for Poster 4', 15, 'image4.jpg', CURRENT_TIMESTAMP, 35.858826, 128.521530, 2, 4, 'EVENT');
 
+SELECT setval('poster_id_seq', (SELECT MAX(id) FROM poster));
 SELECT setval('region_id_seq', (SELECT MAX(id) FROM region));
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
