@@ -9,6 +9,7 @@ import com.goormthon.backend.dto.req.UserRegisterRequestDto;
 import com.goormthon.backend.dto.req.UserUpdateRequestDto;
 import com.goormthon.backend.dto.res.CommonRes;
 import com.goormthon.backend.dto.res.UserRes;
+import com.goormthon.backend.service.LocationService;
 import com.goormthon.backend.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class UserController {
 
     private final UserService userService;
+    private final LocationService locationService;
 
     @GetMapping
     public CommonRes<?> getUser(@RequestParam Long id) {
@@ -65,25 +67,26 @@ public class UserController {
     }
 
 
-    @GetMapping("/location")
-    public String getLocation(@RequestParam String param) {
-        return new String();
-    }
+    // @GetMapping("/location")
+    // public String getLocation(@RequestParam String param) {
+    //     return new String();
+    // }
 
     @PostMapping("/location")
-    public String addLocation(@RequestBody LocationReq dto) {
-
-      return "";
+    public CommonRes<?> addLocation(@RequestBody LocationReq dto) {
+        // locationService.locationSave(dto);
+        return new CommonRes<>(200, "SUCCESS", null);
     }
+
     @PutMapping("{id}")
     public String putLocation(@PathVariable String id, @RequestBody String entity) {
         //TODO: process PUT request
 
         return entity;
     }
-    @DeleteMapping("/location")
-    public String deleteLocation(@RequestParam String param) {
-        return new String();
-    }
+    // @DeleteMapping("/location")
+    // public String deleteLocation(@RequestParam String param) {
+    //     return new String();
+    // }
   
 }

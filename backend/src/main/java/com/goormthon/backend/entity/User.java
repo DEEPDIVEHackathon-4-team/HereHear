@@ -34,9 +34,8 @@ public class User {
     private String password;
     private Integer heartRate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+	private Double latitude;
+	private Double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")

@@ -45,9 +45,8 @@
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    private Double latitude;
+    private Double longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
@@ -64,28 +63,33 @@
     private List<Comment> comments = new ArrayList<>();
 
     @Builder(access = AccessLevel.PRIVATE)
-    private Poster(Long id, String title, String contents, Long likeCount, String img, LocalDateTime createdAt, Location location,
-      Region region, User user, Category category, List<Comment> comments) {
+    private Poster(Long id, String title, String contents, Long likeCount, String img, LocalDateTime createdAt,
+        Double latitude, Double longitude, Region region, User user, Category category, List<Comment> comments) {
+      this.id = id;
       this.title = title;
       this.contents = contents;
       this.likeCount = likeCount;
       this.img = img;
       this.createdAt = createdAt;
-      this.location = location;
+      this.latitude = latitude;
+      this.longitude = longitude;
       this.region = region;
       this.user = user;
       this.category = category;
       this.comments = comments;
     }
-    
-    public static Poster of(AddPosterReq posterReq, User user, Location location) {
+
+
+    public static Poster of(AddPosterReq posterReq, String img, User user) {
       return Poster.builder()
-      .category(posterReq.getCategory())
-      .title(posterReq.getTitle())
-      .contents(posterReq.getContents())
-      .location(location)
-      .user(user)
-      .build();
+          .category(posterReq.getCategory())
+          .title(posterReq.getTitle())
+          .contents(posterReq.getContents())
+          .latitude(posterReq.getLatitude())
+          .longitude(posterReq.getLongitude())
+          .img(img)
+          .user(user)
+          .build();
     }
     // public void update(){
 

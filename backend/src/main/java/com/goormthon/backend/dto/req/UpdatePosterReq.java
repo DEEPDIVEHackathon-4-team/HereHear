@@ -14,5 +14,5 @@ public class UpdatePosterReq {
   private String title;
   private Long userId;
   private String contents;
-  private String location;
+  // private String location;
 }

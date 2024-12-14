@@ -1,8 +1,5 @@
 package com.goormthon.backend.dto.res;
 
-import java.util.List;
-
-import com.goormthon.backend.entity.Location;
 import com.goormthon.backend.entity.Region;
 import com.goormthon.backend.entity.User;
 
@@ -18,7 +15,8 @@ import lombok.NoArgsConstructor;
 public class UserRes {
   private Long id;
   private String nickname;
-  private Location location;
+  private Double latitude;
+  private Double longitude;
   private Integer hearRate;
   private Region region;
 
@@ -27,7 +25,8 @@ public class UserRes {
     return UserRes.builder()
         .id(user.getId())
         .nickname(user.getNickname())
-        .location(user.getLocation())
+        .latitude(user.getLatitude())
+        .longitude(user.getLongitude())
         .region(user.getRegion())
         .hearRate(user.getHeartRate())
         .build();
