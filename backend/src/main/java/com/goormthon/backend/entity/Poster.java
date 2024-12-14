@@ -40,6 +40,8 @@ public class Poster {
   private String title;
   private String contents;
   private Long likeCount;
+  private Long dislikeCount;
+  private Long viewCount;
 
   @Column(columnDefinition = "TEXT")
   private String img;

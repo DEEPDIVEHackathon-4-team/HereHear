@@ -1,16 +1,16 @@
 package com.goormthon.backend.dto.res;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.goormthon.backend.entity.Category;
 import com.goormthon.backend.entity.Poster;
 
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class PosterResponseDto {
+public class PosterDetailResponseDto {
 	private Category category;
 	private String title;
 	private String content;
@@ -21,15 +21,12 @@ public class PosterResponseDto {
 	private String regionName;
 	private Double latitude;
 	private Double longitude;
-	private Long likeCount;
-	private Long dislikeCount;
-	private Long viewCount;
+	private List<CommentResponseDto> comments; // Add this field
 
-	@Builder(access = AccessLevel.PRIVATE)
-	private PosterResponseDto(Category category, String title, String content, LocalDateTime createdAt,
-		Integer commentCount,
-		Long userId, String nickname, String regionName, Double latitude, Double longitude, Long likeCount,
-		Long dislikeCount, Long viewCount) {
+	@Builder
+	private PosterDetailResponseDto(Category category, String title, String content, LocalDateTime createdAt,
+		Integer commentCount, Long userId, String nickname, String regionName, Double latitude, Double longitude,
+		List<CommentResponseDto> comments) {
 		this.category = category;
 		this.title = title;
 		this.content = content;
@@ -40,13 +37,11 @@ public class PosterResponseDto {
 		this.regionName = regionName;
 		this.latitude = latitude;
 		this.longitude = longitude;
-		this.likeCount = likeCount;
-		this.dislikeCount = dislikeCount;
-		this.viewCount = viewCount;
+		this.comments = comments;
 	}
 
-	public static PosterResponseDto of(Poster poster) {
-		return PosterResponseDto.builder()
+	public static PosterDetailResponseDto of(Poster poster, List<CommentResponseDto> comments) {
+		return PosterDetailResponseDto.builder()
 			.category(poster.getCategory())
 			.title(poster.getTitle())
 			.content(poster.getContents())
@@ -57,9 +52,7 @@ public class PosterResponseDto {
 			.latitude(poster.getLatitude())
 			.longitude(poster.getLongitude())
 			.regionName(poster.getRegion().getName())
-			.likeCount(poster.getLikeCount())
-			.dislikeCount(poster.getDislikeCount())
-			.viewCount(poster.getViewCount())
+			.comments(comments)
 			.build();
 	}
 
