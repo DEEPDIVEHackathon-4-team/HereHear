@@ -67,23 +67,22 @@ INSERT INTO region (code, name, parent_code) VALUES
 
 INSERT INTO users (id, nickname, email, password, heart_rate, latitude, longitude, region_code)
 VALUES
-(0, '김현우', 'hyunWoo@example.com', 'pass', 80, 37.352143, 127.071681, 4146500000),
-(1, '이지은', 'jieun@example.com', 'password1', 72, 37.402346,127.1008492, 4113510900),
-(2, 'user2', 'user2@example.com', 'password2', 68, 37.579621, 126.977041, 1100000000),
-(3, 'user3', 'user3@example.com', 'password3', 75, 37.463904, 126.704373, 1111000000),
-(4, 'user4', 'user4@example.com', 'password4', 70, 35.158698, 129.160384, 1111010200);
+(1, '김현우', 'hyunWoo@example.com', 'pass', 80, 37.352143, 127.071681, 4146500000),
+(2, '이지은', 'jieun@example.com', 'password1', 72, 37.402346,127.1008492, 4113510900),
+(3, 'user2', 'user2@example.com', 'password2', 68, 37.579621, 126.977041, 1100000000),
+(4, 'user3', 'user3@example.com', 'password3', 75, 37.463904, 126.704373, 1111000000),
+(5, 'user4', 'user4@example.com', 'password4', 70, 35.158698, 129.160384, 1111010200);
 
-INSERT INTO poster (id, title, contents, like_count, img, created_at, latitude, longitude, region_code, user_id, category)
+INSERT INTO poster (id, title, contents, like_count, img, created_at, latitude, longitude, region_code, user_id, category, dislike_count, view_count)
 VALUES
-(1, '지금 우리 아파트만 정전인가요?', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.3384974, 127.0957044, 4146000000, 0, 'ACCIDENT'),
-(2, '마라톤 이벤트가 있다고 합니다', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.402361, 127.100861, 4113510900, 0, 'EVENT'),
-(3, '미금역 사거리 사고', 'Details for Event B', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT'),
-(4, '좀전에 멧돼지 보신분??', 'Details for Event C', 10, 'imageC.jpg', CURRENT_TIMESTAMP, 37.3535055, 127.0758258, 4146500000, 2, 'RECENT_ISSUE'),
-(5, '말티즈 주인분 찾았습니다!', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING'),
-(6, 'Event D', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE'),
-(7, 'Event E', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT'),
-(8, 'Event E', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'MISSING');
-
+(1, '지금 우리 아파트만 정전인가요?', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.3384974, 127.0957044, 4146500000, 1, 'ACCIDENT', 0, 41),
+(2, '마라톤 이벤트가 있다고 합니다', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.402361, 127.100861, 4113510900, 1, 'EVENT', 1, 100),
+(3, '미금역 사거리 사고', 'Details for Event B', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT', 0, 202),
+(4, '좀전에 멧돼지 보신분??', 'Details for Event C', 10, 'imageC.jpg', CURRENT_TIMESTAMP, 37.3535055, 127.0758258, 4146500000, 2, 'RECENT_ISSUE', 1, 404),
+(5, '말티즈 주인분 찾았습니다!', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING', 0, 39),
+(6, '소방차가 지나가던데 무슨일 인가요?', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE', 0, 20),
+(7, '여기 위치 폭설로 가로수가 넘어져있네요. 조심하세요', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT', 2, 20),
+(8, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299);
 
 
 SELECT setval('poster_id_seq', (SELECT MAX(id) FROM poster));

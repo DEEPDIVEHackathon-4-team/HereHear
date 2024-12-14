@@ -26,14 +26,15 @@ public class CommentService {
 	private final UserRepository userRepository;
 
 	public List<CommentResponseDto> findByPostId(Long postId) {
-		List<Comment> comments = commentRepository.findAllByPosterId(postId);
+		List<Comment> comments = commentRepository.findByPosterId(postId);
 		return comments.stream().map(CommentResponseDto::of).toList();
 	}
 
 	@Transactional
 	public CommentResponseDto saveComment(CommentRequestDto dto) {
 		Long userId = dto.getUserId();
-		User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
 		Long posterId = dto.getPosterId();
 		Poster poster = posterRepository.findById(posterId)

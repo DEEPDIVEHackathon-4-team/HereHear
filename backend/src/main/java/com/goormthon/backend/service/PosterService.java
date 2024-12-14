@@ -1,6 +1,7 @@
 package com.goormthon.backend.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,25 +12,40 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goormthon.backend.dto.req.AddPosterReq;
+import com.goormthon.backend.dto.res.CommentResponseDto;
+import com.goormthon.backend.dto.res.PosterDetailResponseDto;
 import com.goormthon.backend.dto.res.PosterResponseDto;
 import com.goormthon.backend.entity.Category;
 import com.goormthon.backend.entity.Poster;
 import com.goormthon.backend.entity.User;
+import com.goormthon.backend.repository.CommentRepository;
 import com.goormthon.backend.repository.PosterRepository;
 import com.goormthon.backend.repository.UserRepository;
 import com.goormthon.backend.utils.FileUtils;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class PosterService {
 
-  @Autowired
-  private PosterRepository posterRepository;
-
-  @Autowired
-  private UserRepository userRepository;
+  private final PosterRepository posterRepository;
+  private final UserRepository userRepository;
+  private final CommentRepository commentRepository;
 
   public Poster findById(Long id) {
     return posterRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 ID의 게시글"));
+  }
+
+  public PosterDetailResponseDto getPosterWithComments(Long posterId) {
+    Poster poster = posterRepository.findById(posterId)
+        .orElseThrow(() -> new IllegalArgumentException("Poster not found"));
+
+    List<CommentResponseDto> comments = commentRepository.findByPosterId(posterId).stream()
+        .map(CommentResponseDto::of)
+        .toList();
+
+    return PosterDetailResponseDto.of(poster, comments);
   }
 
   @Transactional

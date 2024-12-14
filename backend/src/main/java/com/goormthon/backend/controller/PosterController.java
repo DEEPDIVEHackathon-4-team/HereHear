@@ -1,18 +1,25 @@
 package com.goormthon.backend.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goormthon.backend.dto.req.AddPosterReq;
+import com.goormthon.backend.dto.req.CommentRequestDto;
+import com.goormthon.backend.dto.res.CommentResponseDto;
 import com.goormthon.backend.dto.res.CommonRes;
+import com.goormthon.backend.dto.res.PosterDetailResponseDto;
 import com.goormthon.backend.dto.res.PosterResponseDto;
+import com.goormthon.backend.entity.Comment;
 import com.goormthon.backend.entity.Poster;
+import com.goormthon.backend.service.CommentService;
 import com.goormthon.backend.service.PosterService;
 
 import java.io.IOException;
 import com.goormthon.backend.entity.Category;
 
 import io.swagger.v3.oas.annotations.Parameter;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,10 +36,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/api/v1/poster")
+@RequiredArgsConstructor
 public class PosterController {
 
-  @Autowired
-  private PosterService posterService;
+  private final PosterService posterService;
+  private final CommentService commentService;
 
   @GetMapping("/map")
   public CommonRes<Page<PosterResponseDto>> getAllPosterOnMap(
@@ -75,9 +83,9 @@ public class PosterController {
 
 
   @GetMapping("/search")
-  public CommonRes<Poster> getPoster(@RequestParam Long id) {
-    Poster data = posterService.findById(id);
-    return new CommonRes<>(200, "SUCCESS", data);
+  public CommonRes<?> getPoster(@RequestParam Long id) {
+    PosterDetailResponseDto posterWithComments = posterService.getPosterWithComments(id);
+    return new CommonRes<>(200, "SUCCESS", posterWithComments);
   }
 
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -115,9 +123,13 @@ public class PosterController {
   }
 
   @PostMapping("/comment")
-  public String addComment(@RequestBody String entity) {
-    // TODO: process POST request
-    return "";
+  public CommonRes<?> addComment(@RequestBody CommentRequestDto commentRequestDto) {
+    try {
+      CommentResponseDto commentResponseDto = commentService.saveComment(commentRequestDto);
+      return new CommonRes<>(200, "SUCCESS", commentResponseDto);
+    } catch (Exception e) {
+      return new CommonRes<>(400, "FAIL", null);
+    }
   }
 
   @PutMapping("/comment")
