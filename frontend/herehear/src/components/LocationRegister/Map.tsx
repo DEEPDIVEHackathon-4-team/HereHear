@@ -38,6 +38,7 @@ export default function Map({ search, setLocation }: MapProps) {
       const kakaoMarker = new window.kakao.maps.Marker({
         position: kakaoMap.getCenter(), // 초기 지도 중심 위치
         map: kakaoMap,
+        draggable: true, // 드래그 가능
       });
       setMarker(kakaoMarker);
 
@@ -45,26 +46,53 @@ export default function Map({ search, setLocation }: MapProps) {
       window.kakao.maps.event.addListener(kakaoMap, "dragend", () => {
         const center = kakaoMap.getCenter();
         kakaoMarker.setPosition(center); // 마커를 지도 중심으로 이동
+        updateLocation(center.getLat(), center.getLng());
+      });
 
-        // 좌표로 주소 변환
-        const geocoder = new window.kakao.maps.services.Geocoder();
-        geocoder.coord2Address(
-          center.getLng(),
-          center.getLat(),
-          (result: any[], status: string) => {
-            if (status === window.kakao.maps.services.Status.OK) {
-              const address = result[0]?.address?.address_name || "";
-              const dong = result[0]?.address?.region_3depth_name || "";
-              setLocation({
-                name: "지도에서 선택된 위치",
-                address,
-                x: center.getLng(),
-                y: center.getLat(),
-                dong,
-              });
-            }
+      // 마커 드래그 종료 이벤트
+      window.kakao.maps.event.addListener(kakaoMarker, "dragend", () => {
+        const position = kakaoMarker.getPosition();
+        updateLocation(position.getLat(), position.getLng());
+      });
+
+      // 현재 위치 설정
+      getCurrentLocation(kakaoMap, kakaoMarker);
+    };
+
+    const getCurrentLocation = (kakaoMap: any, kakaoMarker: any) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            const currentPosition = new window.kakao.maps.LatLng(
+              latitude,
+              longitude
+            );
+            kakaoMap.setCenter(currentPosition);
+            kakaoMarker.setPosition(currentPosition);
+            updateLocation(latitude, longitude);
+          },
+          () => {
+            console.error("현재 위치를 불러올 수 없습니다.");
           }
         );
+      }
+    };
+
+    const updateLocation = (lat: number, lng: number) => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.coord2Address(lng, lat, (result: any[], status: string) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const address = result[0]?.address?.address_name || "";
+          const dong = result[0]?.address?.region_3depth_name || "";
+          setLocation({
+            name: "현재 위치",
+            address,
+            x: lng,
+            y: lat,
+            dong,
+          });
+        }
       });
     };
 
