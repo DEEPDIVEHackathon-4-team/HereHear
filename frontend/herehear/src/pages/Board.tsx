@@ -8,8 +8,8 @@ export default function Board() {
       <div className="overflow-y-auto hidden-scrollbar flex-1">
         <PostList />
       </div>
-      <footer className="h-20 flex justify-center">
-        <div className="w-[90%]">
+      <footer className="h-20 flex justify-center ">
+        <div className="w-full">
           <BottomBar />
         </div>
       </footer>
