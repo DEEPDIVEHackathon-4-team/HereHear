@@ -52,7 +52,7 @@ public class Poster {
   private Double longitude;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "region_id")
+  @JoinColumn(name = "region_code")
   private Region region;
 
   @ManyToOne(fetch = FetchType.LAZY)

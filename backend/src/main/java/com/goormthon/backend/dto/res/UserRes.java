@@ -18,7 +18,7 @@ public class UserRes {
   private Double latitude;
   private Double longitude;
   private Integer hearRate;
-  private Region region;
+  private String regionName;
 
   @Builder
   public static UserRes of(User user) {
@@ -27,7 +27,7 @@ public class UserRes {
         .nickname(user.getNickname())
         .latitude(user.getLatitude())
         .longitude(user.getLongitude())
-        .region(user.getRegion())
+        .regionName(user.getRegion().getName())
         .hearRate(user.getHeartRate())
         .build();
   }

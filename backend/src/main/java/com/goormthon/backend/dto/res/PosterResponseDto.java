@@ -42,7 +42,7 @@ public class PosterResponseDto {
 			.commentCount(poster.getComments().size())
 			.userId(poster.getUser().getId())
 			.nickname(poster.getUser().getNickname())
-			.city(poster.getRegion().getCity())
+			.city(poster.getRegion().getName())
 			.build();
 	}
 }

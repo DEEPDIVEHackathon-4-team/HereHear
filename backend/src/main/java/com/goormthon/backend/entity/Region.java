@@ -1,50 +1,30 @@
 package com.goormthon.backend.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
+@AllArgsConstructor
 public class Region {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	private Long code; // 법정동코드 (예: 1100000000, 1111000000, 1111010100)
 
-	@Column(unique = true)
-    private String city;
+	private String name; // 법정동명 (예: "서울특별시", "서울특별시 종로구", "서울특별시 종로구 청운동")
 
-	@Column(unique = true)
-    private String district;
+	@Column(nullable = true)
+	private Long parentCode; // 상위 지역의 법정동코드 (시 -> 구 -> 동로 내려갈수록 parentCode를 통해 상위 식별)
 
-	@Column(unique = true)
-    private String subdistrict;
-
-	@Builder(access = AccessLevel.PRIVATE)
-	private Region(String city, String district, String subdistrict) {
-		this.city = city;
-		this.district = district;
-		this.subdistrict = subdistrict;
-	}
-
-	public static Region of(String city, String district, String subdistrict) {
-		return Region.builder()
-			.city(city)
-			.district(district)
-			.subdistrict(subdistrict)
-			.build();
+	public boolean isRoot() {
+		return this.parentCode == null;
 	}
 }
