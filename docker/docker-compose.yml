@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgis/postgis:15-3.3 # PostGIS 포함 PostgreSQL 이미지
+    container_name: postgres_postgis
+    restart: always
+    environment:
+      POSTGRES_USER: postgres # 사용자 이름
+      POSTGRES_PASSWORD: post123! # 비밀번호
+      POSTGRES_DB: postgres # 기본 생성 DB 이름
+    ports:
+      - "5432:5432" # 호스트와 컨테이너 간 포트 매핑
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # 데이터 영구 저장
+    command: >
+      postgres -c listen_addresses='*'
+volumes:
+  postgres_data:
