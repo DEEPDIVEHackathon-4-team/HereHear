@@ -61,24 +61,30 @@ INSERT INTO region (code, name, parent_code) VALUES
 
 INSERT INTO region (code, name, parent_code) VALUES
 (1111010100, '서울특별시 종로구 청운동', 1111000000),
-(1111010200, '서울특별시 종로구 신교동', 1111000000);
-
-
-
+(1111010200, '서울특별시 종로구 신교동', 1111000000),
+(4146000000, '경기도 용인시', 4100000000),
+(4146500000, '경기도 용인시 수지구', 4146000000);
 
 INSERT INTO users (id, nickname, email, password, heart_rate, latitude, longitude, region_code)
 VALUES
-(1, 'user1', 'user1@example.com', 'password1', 72, 37.497942, 127.027621, 1100000000),
+(0, '김현우', 'hyunWoo@example.com', 'pass', 80, 37.352143, 127.071681, 4146500000),
+(1, '이지은', 'jieun@example.com', 'password1', 72, 37.402346,127.1008492, 4113510900),
 (2, 'user2', 'user2@example.com', 'password2', 68, 37.579621, 126.977041, 1100000000),
 (3, 'user3', 'user3@example.com', 'password3', 75, 37.463904, 126.704373, 1111000000),
 (4, 'user4', 'user4@example.com', 'password4', 70, 35.158698, 129.160384, 1111010200);
 
 INSERT INTO poster (id, title, contents, like_count, img, created_at, latitude, longitude, region_code, user_id, category)
 VALUES
-(1, 'Poster 1', 'Contents for Poster 1', 10, 'image1.jpg', CURRENT_TIMESTAMP, 37.497942, 127.027621, 1100000000, 1, 'EVENT'),
-(2, 'Poster 2', 'Contents for Poster 2', 5, 'image2.jpg', CURRENT_TIMESTAMP, 35.158698, 129.160384, 1100000000, 2, 'ACCIDENT'),
-(3, 'Poster 3', 'Contents for Poster 3', 8, 'image3.jpg', CURRENT_TIMESTAMP, 37.579621, 126.977041, 1111010200, 3, 'RECENT_ISSUE'),
-(4, 'Poster 4', 'Contents for Poster 4', 15, 'image4.jpg', CURRENT_TIMESTAMP, 35.858826, 128.521530, 1111000000, 4, 'EVENT');
+(1, '지금 우리 아파트만 정전인가요?', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.3384974, 127.0957044, 4146000000, 0, 'ACCIDENT'),
+(2, '마라톤 이벤트가 있다고 합니다', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.402361, 127.100861, 4113510900, 0, 'EVENT'),
+(3, '미금역 사거리 사고', 'Details for Event B', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT'),
+(4, '좀전에 멧돼지 보신분??', 'Details for Event C', 10, 'imageC.jpg', CURRENT_TIMESTAMP, 37.3535055, 127.0758258, 4146500000, 2, 'RECENT_ISSUE'),
+(5, '말티즈 주인분 찾았습니다!', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING'),
+(6, 'Event D', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE'),
+(7, 'Event E', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT'),
+(8, 'Event E', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'MISSING');
+
+
 
 SELECT setval('poster_id_seq', (SELECT MAX(id) FROM poster));
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
