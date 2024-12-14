@@ -6,7 +6,7 @@ import { locationState } from "../recoil/locationState";
 
 export default function LocationRegister() {
   const navigate = useNavigate();
-  const [location] = useRecoilState(locationState); // setLocation이 필요 없으면 제거
+  const [location, setLocation] = useRecoilState(locationState);
   const [search, setSearch] = useState("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,8 +47,20 @@ export default function LocationRegister() {
         {/* 지도 영역 */}
         <div className="mt-4 flex items-center justify-center">
           <div className="w-[390px] h-[321px] border border-gray-300 rounded-md overflow-hidden">
-            <Map search={search} />
+            {/* setLocation 전달 */}
+            <Map search={search} setLocation={setLocation} />
           </div>
+        </div>
+
+        {/* 지도 아래 주소 정보 표시 */}
+        <div className="px-5 mt-5">
+          {location.address && (
+            <div>
+              <div className="text-sm text-gray-500 mb-1">주소</div>
+              <div className="text-lg font-medium">{location.address}</div>
+              <div className="text-sm text-gray-500 mt-1">{location.dong}</div>
+            </div>
+          )}
         </div>
 
         {/* 저장 버튼 */}
