@@ -1,64 +1,98 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import Map from "../Map";
+import { useEffect, useState } from "react";
 
-export default function SearchMap() {
-  const navigate = useNavigate();
-  const [search, setSearch] = useState(""); // 검색어 상태
-  const [location, setLocation] = useState({
-    name: "",
-    address: "",
-    x: 0,
-    y: 0,
-    dong: "",
-  }); // 선택된 위치 상태
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
-  // 검색 입력 핸들러
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-  };
+interface MapProps {
+  search: string;
+  setLocation: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      address: string;
+      x: number;
+      y: number;
+      dong: string;
+    }>
+  >;
+}
 
-  return (
-    <div className="relative h-screen">
-      {/* 헤더 */}
-      <div className="flex items-center justify-between px-5 py-3 border-b">
-        <button
-          className="text-gray-500 text-lg"
-          onClick={() => navigate("/postcreate")}
-        >
-          ✕
-        </button>
-        <h1 className="text-lg font-semibold">장소 검색</h1>
-        <div className="w-6"></div>
-      </div>
+export default function Map({ search, setLocation }: MapProps) {
+  const [map, setMap] = useState<any>(null);
 
-      {/* 지도와 검색 입력란 */}
-      <div className="relative flex-grow h-full">
-        {/* 검색 입력란 */}
-        <div className="absolute top-0 left-0 right-0 z-10 px-4 mt-4">
-          <input
-            type="text"
-            placeholder="장소를 검색하세요"
-            value={search}
-            onChange={handleSearchChange}
-            className="w-full p-3 border border-gray-300 rounded-md shadow-md"
-          />
-        </div>
+  useEffect(() => {
+    const loadKakaoMap = () => {
+      const container = document.getElementById("map");
+      const options = {
+        center: new window.kakao.maps.LatLng(37.5665, 126.978),
+        level: 3,
+      };
+      const newMap = new window.kakao.maps.Map(container, options);
+      setMap(newMap);
 
-        {/* 지도 컴포넌트 */}
-        <div className="absolute inset-0 z-0">
-          <Map search={search} setLocation={setLocation} />
-        </div>
+      // 지도를 클릭하면 좌표 업데이트
+      window.kakao.maps.event.addListener(
+        newMap,
+        "click",
+        (mouseEvent: any) => {
+          const latlng = mouseEvent.latLng;
 
-        {/* 선택된 장소 정보 */}
-        <div className="absolute bottom-0 left-0 w-full p-4 bg-white z-10">
-          <h2 className="text-lg font-semibold">선택된 장소:</h2>
-          <p className="text-sm text-gray-600">
-            {location.name || "선택된 장소가 없습니다."}
-          </p>
-          <p className="text-sm text-gray-600">{location.address}</p>
-        </div>
-      </div>
-    </div>
-  );
+          // 좌표로 주소 변환
+          const geocoder = new window.kakao.maps.services.Geocoder();
+          geocoder.coord2Address(
+            latlng.getLng(),
+            latlng.getLat(),
+            (result: any[], status: string) => {
+              if (status === window.kakao.maps.services.Status.OK) {
+                const address = result[0]?.address?.address_name || "";
+                const dong = result[0]?.address?.region_3depth_name || "";
+                setLocation({
+                  name: "지도에서 선택된 위치",
+                  address,
+                  x: latlng.getLng(),
+                  y: latlng.getLat(),
+                  dong,
+                });
+              }
+            }
+          );
+        }
+      );
+    };
+
+    if (window.kakao && window.kakao.maps) {
+      loadKakaoMap();
+    } else {
+      const script = document.createElement("script");
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${
+        import.meta.env.VITE_KAKAO_MAP_API_KEY
+      }&autoload=false&libraries=services`;
+      script.onload = () => window.kakao.maps.load(loadKakaoMap);
+      document.head.appendChild(script);
+    }
+  }, [setLocation]);
+
+  useEffect(() => {
+    if (!map || !search) return;
+
+    const ps = new window.kakao.maps.services.Places();
+    ps.keywordSearch(search, (data: any[], status: string) => {
+      if (status === window.kakao.maps.services.Status.OK) {
+        const bounds = new window.kakao.maps.LatLngBounds();
+        data.forEach((place) => {
+          new window.kakao.maps.Marker({
+            map,
+            position: new window.kakao.maps.LatLng(place.y, place.x),
+          });
+          bounds.extend(new window.kakao.maps.LatLng(place.y, place.x));
+        });
+
+        map.setBounds(bounds);
+      }
+    });
+  }, [search, map]);
+
+  return <div id="map" className="w-full h-full rounded-md" />;
 }

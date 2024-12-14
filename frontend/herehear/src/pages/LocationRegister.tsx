@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import Map from "../components/Map";
+import Map from "../components/LocationRegister/Map";
 import { locationState } from "../recoil/locationState";
 
 export default function LocationRegister() {
   const navigate = useNavigate();
-  const [location, setLocation] = useRecoilState(locationState);
+  const [location] = useRecoilState(locationState); // setLocation이 필요 없으면 제거
   const [search, setSearch] = useState("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,7 +15,6 @@ export default function LocationRegister() {
 
   const handleSave = () => {
     if (location.name && location.address) {
-      localStorage.setItem("location", JSON.stringify(location));
       alert(`활동지 "${location.name}" (${location.dong})가 저장되었습니다.`);
       navigate("/home");
     } else {
@@ -48,21 +47,11 @@ export default function LocationRegister() {
         {/* 지도 영역 */}
         <div className="mt-4 flex items-center justify-center">
           <div className="w-[390px] h-[321px] border border-gray-300 rounded-md overflow-hidden">
-            <Map search={search} setLocation={setLocation} />
+            <Map search={search} />
           </div>
         </div>
 
-        {/* 주소 정보 */}
-        <div className="px-5 mt-5">
-          {location.address && (
-            <div>
-              <div className="text-sm text-gray-500 mb-1">주소</div>
-              <div className="text-lg font-medium">{location.address}</div>
-              <div className="text-sm text-gray-500 mt-1">{location.dong}</div>
-            </div>
-          )}
-        </div>
-
+        {/* 저장 버튼 */}
         <div
           className="absolute left-0 right-0 px-5"
           style={{ bottom: "82px" }}
