@@ -26,13 +26,13 @@ export default function Post({
   return (
     <div className="w-full flex items-start border-b">
       <div className="flex-grow px-5 py-5">
-        <div className="bg-gray-200 text-gray-600 text-xs font-bold rounded-sm w-[50px] h-[20px] flex items-center justify-center mb-2">
+        <div className="bg-gray-100 text-gray-600 text-[11px] font-bold rounded-sm w-[50px] h-[20px] flex items-center justify-center mb-2">
           {category}
         </div>
         <div className="flex">
           <div className="flex-grow">
-            <h2 className="text-lg font-semibold mb-2">{title}</h2>
-            <p className="text-sm text-gray-700 mb-3 line-clamp-2">{content}</p>
+            <h2 className="text-[18px] font-semibold mb-2">{title}</h2>
+            <p className="text-[16px]  text-gray-700 line-clamp-2">{content}</p>
           </div>
           {imageUrl && (
             <div className="ml-4 flex-shrink-0">
@@ -44,12 +44,17 @@ export default function Post({
             </div>
           )}
         </div>
-        <div className="flex justify-between items-center text-sm text-gray-500 mt-3">
-          <div className="flex items-center gap-3">
+        <div className="flex justify-between items-center text-[14px] text-gray-500 mt-[8px]">
+          {/* 왼쪽 정보: 동네, 시간, 조회수 */}
+          <div className="flex items-center gap-2">
             <span>{location}</span>
+            <span className="text-customGray">·</span>
             <span>{timeAgo}</span>
+            <span className="text-customGray">·</span>
             <span>조회수 {views}</span>
           </div>
+
+          {/* 오른쪽 정보: 좋아요, 싫어요, 댓글 */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1">
               <span role="img" aria-label="좋아요">

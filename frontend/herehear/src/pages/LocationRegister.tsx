@@ -15,6 +15,7 @@ export default function LocationRegister() {
 
   const handleSave = () => {
     if (location.name && location.address) {
+      localStorage.setItem("location", JSON.stringify(location));
       alert(`활동지 "${location.name}" (${location.dong})가 저장되었습니다.`);
       navigate("/home");
     } else {

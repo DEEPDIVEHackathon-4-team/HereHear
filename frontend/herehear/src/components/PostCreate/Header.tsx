@@ -14,10 +14,10 @@ export default function Header() {
       </button>
 
       {/* 가운데 텍스트 */}
-      <h1 className="text-lg font-semibold">글쓰기</h1>
+      <h1 className="text-[18px] font-semibold">글쓰기</h1>
 
       {/* 완료 버튼 */}
-      <button onClick={handleComplete} className="text-sm  font-medium">
+      <button onClick={handleComplete} className="text-[18px]  font-medium">
         완료
       </button>
     </div>

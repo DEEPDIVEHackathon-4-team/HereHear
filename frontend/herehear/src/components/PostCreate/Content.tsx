@@ -49,7 +49,7 @@ export default function Content() {
       </div>
 
       {/* 게시글 운영정책 박스 */}
-      <div className="mt-5 bg-gray-100 text-sm text-gray-700 rounded-md p-4">
+      <div className="mt-5 bg-gray-200 text-sm text-gray-700 rounded-md p-4">
         <div className="font-semibold mb-1">게시글 운영정책</div>
         <div>거래관련, 명예훼손, 광고 목적의 글을 올리실 수 없어요.</div>
       </div>
@@ -74,21 +74,21 @@ export default function Content() {
       {/* 사진 및 위치 추가 버튼 */}
       <div className="mt-5 flex items-center gap-3">
         {/* 사진 추가 버튼 */}
-        <label className="flex items-center gap-2 cursor-pointer text-blue-500">
+        <label className="flex items-center gap-2 cursor-pointer">
           <input
             type="file"
             accept="image/*"
             className="hidden"
             onChange={handleImageUpload}
           />
-          사진 추가
+          사진
         </label>
         {/* 위치 추가 버튼 */}
         <button
-          className="text-blue-500 flex items-center gap-2"
+          className="flex items-center gap-2"
           onClick={handleLocationButtonClick}
         >
-          위치 추가
+          위치
         </button>
       </div>
 
