@@ -18,7 +18,6 @@ import com.goormthon.backend.repository.PosterRepository;
 import com.goormthon.backend.repository.UserRepository;
 import com.goormthon.backend.utils.FileUtils;
 
-
 @Service
 public class PosterService {
 
@@ -28,12 +27,12 @@ public class PosterService {
   @Autowired
   private UserRepository userRepository;
 
-  public Poster findById(Long id){
+  public Poster findById(Long id) {
     return posterRepository.findById(id).orElseThrow();
   }
-  
+
   @Transactional
-  public void add(AddPosterReq data, MultipartFile img) throws IOException{
+  public void add(AddPosterReq data, MultipartFile img) throws IOException {
     User user = userRepository.findById(data.getUserId()).orElseThrow();
 
     String base64 = img == null ? null : FileUtils.convertToBase64(img);
@@ -43,18 +42,20 @@ public class PosterService {
   }
 
   // public void update(UpdatePosterReq data, MultipartFile img){
-  //   Poster poster = posterRepository.findById(data.getId()).orElseThrow();
-  //   Location location = locationRepository.findByLatitudeAndLongtitude(data.get).;
-  //   User user = userRepository.findById(data.getUserId()).orElseThrow();
-  //   posterRepository.save(Poster.of(data,user, ));
+  // Poster poster = posterRepository.findById(data.getId()).orElseThrow();
+  // Location location =
+  // locationRepository.findByLatitudeAndLongtitude(data.get).;
+  // User user = userRepository.findById(data.getUserId()).orElseThrow();
+  // posterRepository.save(Poster.of(data,user, ));
   // }
 
-  public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size){
+  public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size) {
     Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
-    return posterRepository.findPostersWithinDistance(latitude, longitude, distance, pageable);
+    Page<Poster> queryResult = posterRepository.findPostersWithinDistance(latitude, longitude, distance, pageable);
+    return queryResult;
   }
 
-  public void delete(Long id){
+  public void delete(Long id) {
     posterRepository.deleteById(id);
   }
 }
