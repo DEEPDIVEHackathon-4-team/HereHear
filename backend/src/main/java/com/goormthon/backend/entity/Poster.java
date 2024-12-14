@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.goormthon.backend.dto.req.PosterReq;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -66,7 +65,6 @@ public class Poster {
 	@Builder(access = AccessLevel.PRIVATE)
 	private Poster(Long id, String title, String contents, Long likeCount, String img, LocalDateTime createdAt, Location location,
 		Region region, User user, Category category, List<Comment> comments) {
-		this.id = id;
     this.title = title;
 		this.contents = contents;
 		this.likeCount = likeCount;
@@ -79,13 +77,8 @@ public class Poster {
 		this.comments = comments;
 	}
 	
-	public static Poster of(PosterReq posterReq) {
+	public static Poster of() {
 		return Poster.builder()
-    .id(posterReq.getId())
-    .category(posterReq.getCategory())
-    .user(posterReq.getUserId())
-    .title(posterReq.getTitle())
-    .contents(posterReq.getContents())
     .build();
 	}
 
