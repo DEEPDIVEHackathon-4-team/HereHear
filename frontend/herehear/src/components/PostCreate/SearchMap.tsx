@@ -8,22 +8,11 @@ declare global {
   }
 }
 
-export default function SearchMap({
-  onClose,
-}: {
-  onClose: () => void;
-  
-}) {
+export default function SearchMap({ onClose }: { onClose: () => void }) {
   const [search, setSearch] = useState("");
   const [map, setMap] = useState<any>(null);
   const [marker, setMarker] = useState<any>(null);
-  const [currentLocation, setCurrentLocation] = useState<{
-    name: string;
-    address: string;
-    latitude: number;
-    longitude: number;
-    dong: string;
-  } | null>(null);
+
   const setLocation = useSetRecoilState(selectLocationState); // 상태 업데이트
 
   useEffect(() => {
@@ -63,7 +52,6 @@ export default function SearchMap({
             dong: addressInfo.region_3depth_name || "", // 동 정보 (없으면 빈 문자열)
           };
           setLocation(location);
-          setCurrentLocation(location);
         }
       });
     };
@@ -102,7 +90,6 @@ export default function SearchMap({
           dong: place.region_3depth_name || "", // 동 정보 (없으면 빈 문자열)
         };
         setLocation(location);
-        setCurrentLocation(location);
       }
     });
   }, [search, map, marker, setLocation]);

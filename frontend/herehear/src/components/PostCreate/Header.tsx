@@ -17,7 +17,7 @@ export default function Header() {
       <h1 className="text-[18px] font-semibold">글쓰기</h1>
 
       {/* 완료 버튼 */}
-      <button onClick={handleComplete} className="text-[18px]  font-medium">
+      <button onClick={handleComplete} className="text-sm  font-medium">
         완료
       </button>
     </div>

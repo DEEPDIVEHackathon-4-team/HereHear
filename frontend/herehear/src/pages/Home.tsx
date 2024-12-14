@@ -41,7 +41,7 @@ export default function Home() {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          "http://172.16.108.26:8080/api/v1/poster",
+          "http://172.16.108.26:8080/api/v1/poster/map",
           {
             params: {
               category: "ACCIDENT",

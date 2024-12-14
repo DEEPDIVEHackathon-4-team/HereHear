@@ -7,14 +7,21 @@ import PostList from "./PostList";
 import FloatingButton from "../components/Board/FloatingButton";
 
 interface PostData {
-  category: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  commentCount: number;
-  userId: number;
-  nickname: string;
-  city: string;
+  id: number; // 게시글 ID
+  category: string; // 카테고리
+  title: string; // 제목
+  content: string; // 내용
+  createdAt: string; // 작성 시간
+  commentCount: number; // 댓글 수
+  userId: number; // 작성자 ID
+  nickname: string; // 작성자 닉네임
+  regionName: string; // 지역 이름 (예: "경기도 용인시 수지구")
+  latitude: number; // 위도
+  longitude: number; // 경도
+  likeCount?: number; // 좋아요 수 (옵션)
+  dislikeCount?: number; // 싫어요 수 (옵션)
+  viewCount?: number; // 조회수 (옵션)
+  imageUrl?: string; // 이미지 URL (옵션)
 }
 
 export default function Board() {
@@ -31,7 +38,7 @@ export default function Board() {
           {
             params: {
               category: "ACCIDENT",
-              regionName: "경기도 성남시 분당구 서현동",
+              regionName: "경기도 용인시 수지구",
               page: 0,
               size: 10,
             },
@@ -42,7 +49,16 @@ export default function Board() {
         );
 
         if (response.data?.data?.content) {
-          setPosts(response.data.data.content); // 유효한 데이터 설정
+          const processedPosts = response.data.data.content.map(
+            (post: PostData) => ({
+              ...post,
+              likeCount: post.likeCount ?? 0,
+              dislikeCount: post.dislikeCount ?? 0,
+              viewCount: post.viewCount ?? 0,
+            })
+          );
+
+          setPosts(processedPosts); // 변환된 데이터 설정
         } else {
           setPosts([]); // 응답 데이터가 없을 경우 빈 배열로 초기화
         }
@@ -66,7 +82,7 @@ export default function Board() {
             <p>로딩 중...</p>
           </div>
         ) : (
-          <PostList posts={posts || []} />
+          <PostList posts={posts} />
         )}
       </div>
       <div className="right-8 bottom-24 absolute">
