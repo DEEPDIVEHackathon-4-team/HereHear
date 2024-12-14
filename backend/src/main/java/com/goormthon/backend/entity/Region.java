@@ -1,9 +1,14 @@
 package com.goormthon.backend.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,11 +20,18 @@ import lombok.NoArgsConstructor;
 public class Region {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String city;	// 시/도
-	private String district;	// 구	
-	private String subdistrict;	// 읍/면/동
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String city;
+    private String district;
+    private String subdistrict;
+
+    @OneToMany(mappedBy = "regions", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "regions", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Poster> posters = new ArrayList<>();
 
 	@Builder(access = AccessLevel.PRIVATE)
 	private Region(String city, String district, String subdistrict) {

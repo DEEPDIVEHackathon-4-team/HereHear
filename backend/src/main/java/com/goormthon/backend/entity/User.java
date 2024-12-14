@@ -5,12 +5,14 @@ import java.util.List;
 
 import com.goormthon.backend.dto.req.UserReq;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,29 +24,27 @@ import lombok.NoArgsConstructor;
 @Getter
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(nullable = false, unique = true)
-	private String email;
+    private String nickname;
+    private String email;
+    private String password;
+    private Integer heartRate;
 
-	@Column(nullable = false)
-	private String nickname;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
-	@Column(nullable = false)
-	private String password;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "regions_id")
+    private Region regions;
 
-	@Column(nullable = false)
-	private Integer heartRate;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Poster> posters = new ArrayList<>();
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Poster> posters = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Location> locations = new ArrayList<>();
-
-	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-	private List<Report> reports = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
 	@Builder(access = AccessLevel.PRIVATE)
 	private User(Long id, String email, String nickname, String password, Integer heartRate) {

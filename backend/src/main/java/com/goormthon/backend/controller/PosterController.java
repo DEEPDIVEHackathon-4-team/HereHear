@@ -1,9 +1,19 @@
 package com.goormthon.backend.controller;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.goormthon.backend.dto.req.PosterReq;
+import com.goormthon.backend.dto.res.CommonRes;
+import com.goormthon.backend.entity.Poster;
+import com.goormthon.backend.service.PosterService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +27,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/api/v1/poster")
 public class PosterController {
   
+  @Autowired
+  private PosterService posterService;
+
   @GetMapping("")
-  public String getPoster(@RequestParam String param) {
-      return new String();
+  public CommonRes<Page<Poster>> getAllPoster(@RequestParam String tag, @RequestParam(required = true) Double latitude,@RequestParam(required = true) Double longitude,@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") Integer size) {
+    CommonRes<Page<Poster>> res = null;  
+    try{
+        Page<Poster> data = posterService.findAll(latitude, longitude, longitude, page, page);
+        res = new CommonRes<>(200, "SUCCESS", data);      
+      } catch(Exception e){
+        res = new CommonRes<>(400, "BAD REQUEST", null);
+      }
+      return res;
   }
 
+  @GetMapping("")
+  public CommonRes<Poster> getPoster(@RequestParam Long id) {
+    CommonRes<Poster> res = null;
+    try{
+      Poster data = posterService.findById(id);;
+      res = new CommonRes<>(200, "SUCCESS", data);      
+    } catch(Exception e){
+      res = new CommonRes<>(400, "BAD REQUEST", null);
+    }
+    return res;
+  }
+
+
   @PostMapping("")
-  public String addPoster(@RequestBody String entity) {
+  public String addPoster(@RequestPart PosterReq request, @RequestPart MultipartFile img) {
       //TODO: process POST request
       return "";
   }
@@ -36,10 +69,15 @@ public class PosterController {
   }
  
   @DeleteMapping("")
-  public String deletePoster(@PathVariable String id) {
-      //TODO: process PUT request
-      
-      return "";
+  public CommonRes<Long> deletePoster(@RequestParam Long id) {
+    CommonRes<Long> res = new CommonRes<>();  
+    try{
+        posterService.delete(id);
+        res = new CommonRes<>(200, "SUCCESS", id);      
+      } catch(Exception e){
+        res = new CommonRes<>(400, "BAD REQUEST", null);
+      }
+      return res;
   }
   
   @GetMapping("/comment")

@@ -8,6 +8,8 @@ import com.goormthon.backend.dto.res.UserRes;
 import com.goormthon.backend.entity.User;
 import com.goormthon.backend.repository.UserRepository;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
 public class UserService {
@@ -26,17 +28,9 @@ public class UserService {
     return new UserRes();
   }
 
-  public void userSave(UserReq userReq){
-    User user = null;
+@Transactional
+  public void register(UserReq userReq){
 
-    if(userReq.getId() == null){
-      user = User.of(userReq);
-    }else{
-      user = userRepository.findById(userReq.getId()).orElseThrow();
-      user.update(userReq.getNickname(), userReq.getEmail(), userReq.getPassword());
-    }
-    
-    userRepository.save(user);
   }
 
   public void userDeleteById(Long id){
