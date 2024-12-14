@@ -26,15 +26,15 @@ export default function LocationRegister() {
     <div className="center-content flex flex-col bg-white relative">
       <div className="flex flex-col h-screen">
         {/* 상단 */}
-        <div className="px-5 py-3 border-b">
-          <h1 className="text-2xl font-bold">주 활동지 추가</h1>
-          <p className="text-gray-600 text-sm mt-2">
+        <div className="px-5 pt-[76px]">
+          <h1 className="text-[26px] font-bold">주 활동지 추가</h1>
+          <p className="text-[18px] text-gray-600 text-sm mt-[30px]">
             지도를 움직이거나 주소를 입력하세요
           </p>
         </div>
 
         {/* 검색 입력란 */}
-        <div className="px-5 mt-4">
+        <div className="px-5 mt-[17px]">
           <input
             type="text"
             placeholder="장소명을 검색하세요"
@@ -45,19 +45,27 @@ export default function LocationRegister() {
         </div>
 
         {/* 지도 영역 */}
-        <div className="flex-grow mt-4">
-          <Map search={search} setLocation={setLocation} />
+        <div className="mt-4 flex items-center justify-center">
+          <div className="w-[390px] h-[321px] border border-gray-300 rounded-md overflow-hidden">
+            <Map search={search} setLocation={setLocation} />
+          </div>
         </div>
 
-        {/* 주소 정보와 저장 버튼 */}
-        <div className="px-5 py-4 bg-white border-t">
+        {/* 주소 정보 */}
+        <div className="px-5 mt-5">
           {location.address && (
-            <div className="mb-4">
-              <div className="text-sm text-gray-500">주소</div>
-              <div className="text-lg font-medium mt-1">{location.address}</div>
+            <div>
+              <div className="text-sm text-gray-500 mb-1">주소</div>
+              <div className="text-lg font-medium">{location.address}</div>
               <div className="text-sm text-gray-500 mt-1">{location.dong}</div>
             </div>
           )}
+        </div>
+
+        <div
+          className="absolute left-0 right-0 px-5"
+          style={{ bottom: "82px" }}
+        >
           <button
             className="w-full py-3 bg-blue-500 text-white font-bold rounded-md"
             onClick={handleSave}
