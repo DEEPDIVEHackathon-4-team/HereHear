@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.goormthon.backend.dto.req.AddPosterReq;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -77,8 +78,13 @@ public class Poster {
 		this.comments = comments;
 	}
 	
-	public static Poster of() {
+	public static Poster of(AddPosterReq posterReq, User user, Location location) {
 		return Poster.builder()
+    .category(posterReq.getCategory())
+    .title(posterReq.getTitle())
+    .contents(posterReq.getContents())
+    .location(location)
+    .user(user)
     .build();
 	}
 

@@ -8,11 +8,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PosterReq {
-  private Long id;
+public class AddPosterReq {
   private Category category;
   private String title;
   private Long userId;
   private String contents;
-  private String location;
+  private Double latitude;
+  private Double longitude;
 }

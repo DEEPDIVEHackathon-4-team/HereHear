@@ -3,7 +3,7 @@ package com.goormthon.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.goormthon.backend.dto.req.PosterReq;
+import com.goormthon.backend.dto.req.UpdatePosterReq;
 import com.goormthon.backend.dto.res.CommonRes;
 import com.goormthon.backend.entity.Poster;
 import com.goormthon.backend.service.PosterService;
@@ -56,7 +56,7 @@ public class PosterController {
 
 
   @PostMapping("")
-  public String addPoster(@RequestPart PosterReq request, @RequestPart MultipartFile img) {
+  public String addPoster(@RequestPart UpdatePosterReq request, @RequestPart MultipartFile img) {
       //TODO: process POST request
       return "";
   }

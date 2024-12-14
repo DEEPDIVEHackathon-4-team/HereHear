@@ -8,9 +8,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.goormthon.backend.dto.req.PosterReq;
+import com.goormthon.backend.dto.req.AddPosterReq;
+import com.goormthon.backend.dto.req.UpdatePosterReq;
+import com.goormthon.backend.entity.Location;
 import com.goormthon.backend.entity.Poster;
+import com.goormthon.backend.entity.User;
+import com.goormthon.backend.repository.LocationRepository;
 import com.goormthon.backend.repository.PosterRepository;
+import com.goormthon.backend.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PosterService {
@@ -18,12 +25,28 @@ public class PosterService {
   @Autowired
   private PosterRepository posterRepository;
 
+  @Autowired
+  private UserRepository userRepository;
+
+  @Autowired
+  private LocationRepository locationRepository;
+
   public Poster findById(Long id){
     return posterRepository.findById(id).orElseThrow();
   }
   
-  public void save(PosterReq data, MultipartFile img){
-    posterRepository.save(Poster.of(data));
+  @Transactional
+  public void add(AddPosterReq data, MultipartFile img){
+    Location location = locationRepository.findByLatitudeAndLongtitude(data.getLatitude(), data.getLongitude()).orElseThrow();
+    User user = userRepository.findById(data.getUserId()).orElseThrow();
+    posterRepository.save(Poster.of(data,user, location));
+  }
+
+  public void update(UpdatePosterReq data, MultipartFile img){
+    Poster poster = posterRepository.findById(data.getId()).orElseThrow();
+    Location location = locationRepository.findByLatitudeAndLongtitude(data.get).;
+    User user = userRepository.findById(data.getUserId()).orElseThrow();
+    posterRepository.save(Poster.of(data,user, ));
   }
 
   public Page<Poster> findAll(Double latitude, Double longitude, Double distance, int page, int size){
