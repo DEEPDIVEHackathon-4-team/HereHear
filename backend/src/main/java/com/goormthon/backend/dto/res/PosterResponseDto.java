@@ -24,12 +24,13 @@ public class PosterResponseDto {
 	private Long likeCount;
 	private Long dislikeCount;
 	private Long viewCount;
+	private Long posterId;
 
 	@Builder(access = AccessLevel.PRIVATE)
 	private PosterResponseDto(Category category, String title, String content, LocalDateTime createdAt,
 		Integer commentCount,
 		Long userId, String nickname, String regionName, Double latitude, Double longitude, Long likeCount,
-		Long dislikeCount, Long viewCount) {
+		Long dislikeCount, Long viewCount, Long posterId) {
 		this.category = category;
 		this.title = title;
 		this.content = content;
@@ -43,6 +44,7 @@ public class PosterResponseDto {
 		this.likeCount = likeCount;
 		this.dislikeCount = dislikeCount;
 		this.viewCount = viewCount;
+		this.posterId = posterId;
 	}
 
 	public static PosterResponseDto of(Poster poster) {
@@ -60,6 +62,7 @@ public class PosterResponseDto {
 			.likeCount(poster.getLikeCount())
 			.dislikeCount(poster.getDislikeCount())
 			.viewCount(poster.getViewCount())
+			.posterId(poster.getId())
 			.build();
 	}
 
