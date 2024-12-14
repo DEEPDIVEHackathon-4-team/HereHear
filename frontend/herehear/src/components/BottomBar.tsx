@@ -17,7 +17,7 @@ export default function BottomBar() {
         {/* 게시글 버튼 */}
         <div
           className="flex flex-col justify-center items-center cursor-pointer"
-          onClick={() => navigate("/postlist")}
+          onClick={() => navigate("/board")}
         >
           <div className="text-sm font-medium">게시글</div>
         </div>
