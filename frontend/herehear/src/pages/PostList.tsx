@@ -28,7 +28,7 @@ export default function PostList() {
             dislikes={2}
             comments={5}
             imageUrl="https://via.placeholder.com/80"
-          />
+          />{" "}
         </div>
       </div>
     </div>

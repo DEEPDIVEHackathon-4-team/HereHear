@@ -50,10 +50,10 @@ const Map = ({ search, setLocation }: MapProps) => {
                 place.x,
                 place.y,
                 (
-                  result: kakao.maps.services.RegionCode[],
+                  result: kakao.maps.services.RegionCode[] | undefined,
                   status: kakao.maps.services.Status
                 ) => {
-                  if (status === kakao.maps.services.Status.OK) {
+                  if (status === kakao.maps.services.Status.OK && result) {
                     const dongName = result[0]?.region_3depth_name || ""; // 동 이름
                     setLocation({
                       name: place.place_name,
