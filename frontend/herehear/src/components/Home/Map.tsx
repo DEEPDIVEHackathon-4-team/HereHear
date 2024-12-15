@@ -8,14 +8,19 @@ declare global {
 
 interface MapProps {
   search: string;
-  onPinClick: (latitude:Dou, longitude) => void; // 핀 클릭 이벤트
+  posts: {
+    latitude: number;
+    longitude: number;
+    title: string;
+  }[]; // 게시물 데이터
+  onPinClick: (latitude: number, longitude: number) => void;
 }
 
-export default function Map({ search, onPinClick }: MapProps) {
+export default function Map({ search, posts, onPinClick }: MapProps) {
   const [currentLocation, setCurrentLocation] = useState<{
     lat: number;
     lng: number;
-  } | null>(null); // 기본값 null로 설정
+  } | null>(null);
 
   useEffect(() => {
     const fetchCurrentLocation = () => {
@@ -25,16 +30,10 @@ export default function Map({ search, onPinClick }: MapProps) {
             const { latitude, longitude } = position.coords;
             setCurrentLocation({ lat: latitude, lng: longitude });
           },
-          (error) => {
-            console.error("Geolocation error:", error);
-            // 위치 가져오기 실패 시 기본 위치로 설정
-            setCurrentLocation({ lat: 37.5665, lng: 126.978 });
-          }
+          () => setCurrentLocation({ lat: 37.5665, lng: 126.978 }) // 기본 위치
         );
       } else {
-        console.error("Geolocation is not supported by this browser.");
-        // Geolocation 미지원 시 기본 위치로 설정
-        setCurrentLocation({ lat: 37.5665, lng: 126.978 });
+        setCurrentLocation({ lat: 37.5665, lng: 126.978 }); // 기본 위치
       }
     };
 
@@ -42,7 +41,7 @@ export default function Map({ search, onPinClick }: MapProps) {
   }, []);
 
   useEffect(() => {
-    if (!currentLocation) return; // 위치 정보가 없으면 지도 로딩 중단
+    if (!currentLocation) return;
 
     const loadKakaoMap = () => {
       const container = document.getElementById("map");
@@ -55,7 +54,7 @@ export default function Map({ search, onPinClick }: MapProps) {
       };
       const map = new window.kakao.maps.Map(container, options);
 
-      // 현재 위치에 커스텀 오버레이(빨간 동그라미) 추가
+      // 현재 위치 표시
       new window.kakao.maps.CustomOverlay({
         map,
         position: new window.kakao.maps.LatLng(
@@ -66,18 +65,18 @@ export default function Map({ search, onPinClick }: MapProps) {
         zIndex: 1,
       });
 
-      // 마커 추가 및 클릭 이벤트 처리
-      const addMarkerWithClickEvent = (lat: number, lng: number, name: string) => {
+      // 게시물 데이터를 기반으로 마커 추가
+      posts.forEach((post) => {
         const marker = new window.kakao.maps.Marker({
-          position: new window.kakao.maps.LatLng(lat, lng),
+          position: new window.kakao.maps.LatLng(post.latitude, post.longitude),
           map,
         });
 
         // 마커 클릭 이벤트
         window.kakao.maps.event.addListener(marker, "click", () => {
-          onPinClick(name); // 부모 컴포넌트에 위치 이름 전달
+          onPinClick(post.latitude, post.longitude);
         });
-      };
+      });
 
       if (search) {
         const ps = new window.kakao.maps.services.Places();
@@ -85,14 +84,8 @@ export default function Map({ search, onPinClick }: MapProps) {
           if (status === window.kakao.maps.services.Status.OK) {
             const bounds = new window.kakao.maps.LatLngBounds();
             data.forEach((place) => {
-              addMarkerWithClickEvent(
-                parseFloat(place.y),
-                parseFloat(place.x),
-                place.place_name
-              );
               bounds.extend(new window.kakao.maps.LatLng(place.y, place.x));
             });
-
             map.setBounds(bounds);
           }
         });
@@ -109,7 +102,7 @@ export default function Map({ search, onPinClick }: MapProps) {
       script.onload = () => window.kakao.maps.load(loadKakaoMap);
       document.head.appendChild(script);
     }
-  }, [search, currentLocation, onPinClick]);
+  }, [currentLocation, posts, search, onPinClick]);
 
   return (
     <div className="w-full h-full">

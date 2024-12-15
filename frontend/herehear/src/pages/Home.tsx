@@ -44,7 +44,7 @@ export default function Home() {
           "http://172.16.108.26:8080/api/v1/poster/map",
           {
             params: {
-              category: "ACCIDENT",
+              category: "",
               latitude: 37,
               longitude: 127,
               distance: 4000,
@@ -138,10 +138,12 @@ export default function Home() {
         <div className="absolute inset-0 z-0">
           <Map
             search={search}
-            posts={posts}
-            onPinClick={(latitude, longitude) =>
-              handlePinClick(latitude, longitude)
-            }
+            posts={posts.map((post) => ({
+              latitude: post.latitude,
+              longitude: post.longitude,
+              title: post.title,
+            }))}
+            onPinClick={handlePinClick}
           />
         </div>
 
