@@ -76,14 +76,16 @@ VALUES
 INSERT INTO poster (id, title, contents, like_count, img, created_at, latitude, longitude, region_code, user_id, category, dislike_count, view_count)
 VALUES
 (1, '지금 우리 아파트만 정전인가요?', '밤에 자는데 온집안 전자제품들이 새로 켜지면서 띠리링 소리 나더라구요.  혹시 다른 아파트도 그랬나요?', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.3384974, 127.0957044, 4146500000, 1, 'ACCIDENT', 0, 41),
-(2, '마라톤 이벤트가 있다고 합니다', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.402361, 127.100861, 4113510900, 1, 'EVENT', 1, 100),
-(3, '미금역 사거리 사고', '뉴스링크 https://m.news.nate.com/view/20241122n27975', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT', 0, 202),
-(4, '좀전에 멧돼지 보신분??', 'Details for Event C', 10, 'imageC.jpg', CURRENT_TIMESTAMP, 37.3535055, 127.0758258, 4146500000, 2, 'RECENT_ISSUE', 1, 404),
-(5, '말티즈 주인분 찾았습니다!', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING', 0, 39),
-(6, '소방차가 지나가던데 무슨일 인가요?', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE', 0, 20),
-(7, '여기 위치 폭설로 가로수가 넘어져있네요. 조심하세요', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT', 2, 20),
-(8, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299),
-(9, '길냥이 아기고양이가 탄천에서 헤매요.', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.343300, 127.097393, 4113511300, 4, 'RECENT_ISSUE', 0, 299);
+(2, '마라톤 이벤트가 있다고 합니다', '다음 주말에 지역 주민을 위한 마라톤 이벤트가 열립니다. 자세한 일정과 참가 방법은 곧 공지될 예정입니다.', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.402361, 127.100861, 4113510900, 1, 'EVENT', 1, 100),
+(3, '미금역 사거리 사고', '오늘 아침 미금역 사거리에서 교통사고가 발생했습니다. 관련 내용은 뉴스링크를 참조하세요: https://m.news.nate.com/view/20241122n27975', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT', 0, 202),
+(4, '좀전에 멧돼지 보신분??', '조금 전 이 지역에서 멧돼지가 목격되었습니다. 혹시 같은 멧돼지를 보신 분은 정보를 공유해 주세요.', 10, 'imageC.jpg', CURRENT_TIMESTAMP, 37.3535055, 127.0758258, 4146500000, 2, 'RECENT_ISSUE', 1, 404),
+(5, '말티즈 주인분 찾았습니다!', '이전에 실종되었던 말티즈 강아지의 주인을 찾았습니다. 모두 도와주신 덕분입니다. 감사합니다!', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING', 0, 39),
+(6, '소방차가 지나가던데 무슨일 인가요?', '조금 전에 소방차가 이 지역을 빠르게 지나갔습니다. 혹시 무슨 일이 있었는지 아시는 분 계신가요?', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE', 0, 20),
+(7, '여기 위치 폭설로 가로수가 넘어져있네요. 조심하세요', '현재 이 위치에서 폭설로 인해 가로수가 도로에 넘어져 있습니다. 지나가시는 분들 안전에 유의하세요.', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT', 2, 20),
+(8, '오늘 판교역 무슨일 있나요?', '오늘 판교역에서 무슨 일이 있는 것 같습니다. 혹시 아시는 분 계시면 공유 부탁드립니다.', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299),
+(9, '길냥이 아기고양이가 탄천에서 헤매요.', '탄천 근처에서 길냥이 아기고양이가 헤매고 있습니다. 주인을 찾는 중이니 혹시 아시는 분은 연락 주세요.', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.343300, 127.097393, 4113511300, 4, 'MISSING', 0, 299),
+(10, '해커톤 이벤트가 있다고 하는데요??', '너무 재미있고 유익한 구름톤이 열린다고 하네요~~ 참여 많이 하세여', 40, 'image3.jpg', CURRENT_TIMESTAMP, 37.351717, 127.070510, 4146500000, 3, 'EVENT', 0, 399);
+
 
 INSERT INTO comment (id, poster_id, user_id, content, created_at)
 VALUES

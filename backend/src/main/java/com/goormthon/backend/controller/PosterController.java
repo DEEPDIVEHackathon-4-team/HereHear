@@ -1,6 +1,7 @@
 package com.goormthon.backend.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,13 +40,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/api/v1/poster")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173") // 프론트엔드 도메인 허용
+@Tag(name = "Poster Controller", description = "map/board 화면 poster 조회 및 게시글수정삭제")
 public class PosterController {
 
   private final PosterService posterService;
   private final CommentService commentService;
 
-  @Tag(name = "Poster Controller", description = "map/board 화면 poster 조회 및 게시글수정삭제")
   @GetMapping("/map")
+  @Operation(summary = "지도상의 게시글들 조회"
+      , description = "지도위의 게시글들을 조회합니다. "
+      + "좌표와 좌표의 반경 내의 게시글들을 조회."
+      + "카테고리 null이면 전체조회/아니면 카테고리별 조회"
+  )
   public CommonRes<Page<PosterResponseDto>> getAllPosterOnMap(
       @RequestParam(required = false) Category category,
       @RequestParam(required = true) Double latitude,
@@ -67,6 +74,10 @@ public class PosterController {
   }
 
   @GetMapping("/board")
+  @Operation(summary = "게시글탭에서 게시글 리스트 조회"
+      , description = "지역이름의 게시글 리스트 조회."
+      + "카테고리 null이면 전체조회/아니면 카테고리별 조회"
+  )
   public CommonRes<Page<PosterResponseDto>> getAllPosterOnBoard(
       @RequestParam(required = false) Category category,
       @RequestParam(required = true) String regionName,
@@ -85,6 +96,9 @@ public class PosterController {
   }
 
 
+  @Operation(summary = "게시글 상세 조회"
+      , description = "게시글 상세 조회합니다."
+  )
   @GetMapping("/search")
   public CommonRes<?> getPoster(@RequestParam Long id) {
     PosterDetailResponseDto posterWithComments = posterService.getPosterWithComments(id);
