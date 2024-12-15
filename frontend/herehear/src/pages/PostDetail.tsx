@@ -30,7 +30,7 @@ interface PostData {
   id: number;
   category: string;
   title: string;
-  contents: string;
+  content: string;
   likeCount: number;
   img?: string;
   viewCount: number;
@@ -155,7 +155,7 @@ export default function PostDetail() {
         <h2 className="text-xl font-bold mb-3">{postData.title}</h2>
 
         {/* 내용 */}
-        <p className="text-gray-800 leading-relaxed">{postData.contents}</p>
+        <p className="text-gray-800 leading-relaxed">{postData.content}</p>
 
         {/* 이미지 (옵션) */}
         {postData.img && (

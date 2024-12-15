@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/board" element={<Board />} />
-        <Route path="/location" element={<LocationRegister />} />
+        <Route path="/" element={<LocationRegister />} />
         <Route path="/myprofile" element={<MyProfile />} />
         <Route path="/postcreate" element={<PostCreate />} />
         <Route path="/postdetail" element={<PostDetail />} />
@@ -25,10 +25,7 @@ function App() {
           path="/searchmap"
           element={<SearchMap onClose={() => console.log("SearchMap 닫힘")} />}
         />
-        <Route
-          path="/postDetail/:id"
-          element={<PostDetail/>}
-        />
+        <Route path="/postDetail/:id" element={<PostDetail />} />
       </Routes>
     </RecoilRoot>
   );
