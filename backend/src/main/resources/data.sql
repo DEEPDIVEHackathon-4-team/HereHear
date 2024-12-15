@@ -75,21 +75,21 @@ VALUES
 
 INSERT INTO poster (id, title, contents, like_count, img, created_at, latitude, longitude, region_code, user_id, category, dislike_count, view_count)
 VALUES
-(1, '지금 우리 아파트만 정전인가요?', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.3384974, 127.0957044, 4146500000, 1, 'ACCIDENT', 0, 41),
+(1, '지금 우리 아파트만 정전인가요?', '밤에 자는데 온집안 전자제품들이 새로 켜지면서 띠리링 소리 나더라구요.  혹시 다른 아파트도 그랬나요?', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.3384974, 127.0957044, 4146500000, 1, 'ACCIDENT', 0, 41),
 (2, '마라톤 이벤트가 있다고 합니다', 'Details for Event A', 15, 'imageA.jpg', CURRENT_TIMESTAMP, 37.402361, 127.100861, 4113510900, 1, 'EVENT', 1, 100),
-(3, '미금역 사거리 사고', 'Details for Event B', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT', 0, 202),
+(3, '미금역 사거리 사고', '뉴스링크 https://m.news.nate.com/view/20241122n27975', 20, 'imageB.jpg', CURRENT_TIMESTAMP, 37.3500101, 127.1088885, 4113500000, 1, 'ACCIDENT', 0, 202),
 (4, '좀전에 멧돼지 보신분??', 'Details for Event C', 10, 'imageC.jpg', CURRENT_TIMESTAMP, 37.3535055, 127.0758258, 4146500000, 2, 'RECENT_ISSUE', 1, 404),
 (5, '말티즈 주인분 찾았습니다!', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING', 0, 39),
 (6, '소방차가 지나가던데 무슨일 인가요?', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE', 0, 20),
 (7, '여기 위치 폭설로 가로수가 넘어져있네요. 조심하세요', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT', 2, 20),
 (8, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299),
-(9, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299);
+(9, '길냥이 아기고양이가 탄천에서 헤매요.', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.343300, 127.097393, 4113511300, 4, 'RECENT_ISSUE', 0, 299);
 
 INSERT INTO comment (id, poster_id, user_id, content, created_at)
 VALUES
-(1, 1, 1, '저희 아파트도 그런 것 같아요', CURRENT_TIMESTAMP),
-(2, 2, 1, '이런', CURRENT_TIMESTAMP),
-(3, 2, 1, '관리실에 문의해보니 저희 근처가 다 그런가봐요', CURRENT_TIMESTAMP);
+(1, 1, 1, '저희 아파트도 새벽 3시 좀 넘은시간에 정전이었어요', CURRENT_TIMESTAMP),
+(2, 1, 2, '이런', CURRENT_TIMESTAMP),
+(3, 1, 2, '관리실에 문의해보니 저희 근처가 다 그런가봐요', CURRENT_TIMESTAMP);
 
 SELECT setval('poster_id_seq', (SELECT MAX(id) FROM poster));
 SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));

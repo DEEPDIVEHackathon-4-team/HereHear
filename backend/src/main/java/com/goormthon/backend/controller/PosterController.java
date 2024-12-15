@@ -18,7 +18,9 @@ import com.goormthon.backend.service.PosterService;
 import java.io.IOException;
 import com.goormthon.backend.entity.Category;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ public class PosterController {
   private final PosterService posterService;
   private final CommentService commentService;
 
+  @Tag(name = "Poster Controller", description = "map/board 화면 poster 조회 및 게시글수정삭제")
   @GetMapping("/map")
   public CommonRes<Page<PosterResponseDto>> getAllPosterOnMap(
       @RequestParam(required = false) Category category,
@@ -88,6 +91,7 @@ public class PosterController {
     return new CommonRes<>(200, "SUCCESS", posterWithComments);
   }
 
+  // @Operation(summary = "유저 생성", description = "유저를 등록합니다. 유저의 활동지는 추가 불가능")
   @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public CommonRes<?> addPoster(
       @RequestPart("request") @Parameter(description = "포스터 데이터(JSON)") AddPosterReq request,
