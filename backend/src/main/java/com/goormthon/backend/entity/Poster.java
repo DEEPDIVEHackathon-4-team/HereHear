@@ -68,12 +68,15 @@ public class Poster {
   private List<Comment> comments = new ArrayList<>();
 
   @Builder(access = AccessLevel.PRIVATE)
-  private Poster(Long id, String title, String contents, Long likeCount, String img, LocalDateTime createdAt,
-      Double latitude, Double longitude, Region region, User user, Category category, List<Comment> comments) {
+  private Poster(Long id, String title, String contents, Long likeCount, Long dislikeCount, Long viewCount, String img,
+      LocalDateTime createdAt, Double latitude, Double longitude, Region region, User user, Category category,
+      List<Comment> comments) {
     this.id = id;
     this.title = title;
     this.contents = contents;
     this.likeCount = likeCount;
+    this.dislikeCount = dislikeCount;
+    this.viewCount = viewCount;
     this.img = img;
     this.createdAt = createdAt;
     this.latitude = latitude;
