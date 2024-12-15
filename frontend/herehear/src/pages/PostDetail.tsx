@@ -1,9 +1,31 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PostDetail() {
   const navigate = useNavigate();
+  const [postData, setPostData] = useState({});
+  const { id } = useParams(); // URL의 ID를 가져옴
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://172.16.108.26:8080/api/v1/poster/search`,
+          {
+            params: { id },
+            headers: {
+              Accept: "*/*",
+            },
+          }
+        );
+        setPostData(response.data.data); // 서버에서 반환된 데이터를 상태에 저장
+      } catch (error) {
+        console.error("Error fetching post data:", error);
+      }
+    };
 
+    fetchData();
+  }, [id]); // id가 변경될 때마다 실행
   // 예시 데이터
   const post = {
     id: 1,
@@ -75,7 +97,7 @@ export default function PostDetail() {
           </div>
           {/* 유저 정보 텍스트 */}
           <div>
-            <div className="text-sm font-medium">{post.user.username}</div>
+            <div className="text-sm font-medium">{postData.nickname}</div>
             <div className="text-xs text-gray-500">
               {post.user.location} • {post.user.timeAgo}
             </div>
@@ -83,10 +105,10 @@ export default function PostDetail() {
         </div>
 
         {/* 제목 */}
-        <h2 className="text-xl font-bold mb-3">{post.title}</h2>
+        <h2 className="text-xl font-bold mb-3">{postData.title}</h2>
 
         {/* 내용 */}
-        <p className="text-gray-800 leading-relaxed">{post.content}</p>
+        <p className="text-gray-800 leading-relaxed">{postData.content}</p>
 
         {/* 이미지 (옵션) */}
         {post.imageUrl && (
@@ -122,7 +144,7 @@ export default function PostDetail() {
                 {/* 유저 프로필 */}
                 <div className="w-10 h-10 rounded-full overflow-hidden border mr-3">
                   <img
-                    src={comment.user.profileImage}
+                    src={post.imageUrl}
                     alt="프로필"
                     className="w-full h-full object-cover"
                   />

@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
 interface PostProps {
   category: string; // 카테고리
+  id: number;
   title: string; // 제목
   content: string; // 내용
   city: string; // 동네 이름 (기존 location 필드와 매핑)
@@ -20,6 +22,7 @@ const categoryMap: Record<string, string> = {
 };
 
 export default function Post({
+  id,
   category,
   title,
   content,
@@ -32,6 +35,7 @@ export default function Post({
   imageUrl,
 }: PostProps) {
   // 작성 시간을 '몇 시간 전' 형식으로 변환
+  const navi = useNavigate();
   const timeAgo = (() => {
     const now = new Date();
     const created = new Date(createdAt);
@@ -46,7 +50,7 @@ export default function Post({
   const displayCategory = categoryMap[category] || "기타";
 
   return (
-    <div className="w-full flex items-start border-b">
+    <div className="w-full flex items-start border-b" onClick={() => navi(`/postDetail/${id}`)}>
       <div className="flex-grow px-5 py-5">
         {/* 카테고리 */}
         <div className="bg-gray-100 text-gray-600 text-[11px] font-bold rounded-sm w-[50px] h-[20px] flex items-center justify-center mb-2">
