@@ -25,6 +25,10 @@ function App() {
           path="/searchmap"
           element={<SearchMap onClose={() => console.log("SearchMap 닫힘")} />}
         />
+        <Route
+          path="/postDetail/:id"
+          element={<PostDetail/>}
+        />
       </Routes>
     </RecoilRoot>
   );

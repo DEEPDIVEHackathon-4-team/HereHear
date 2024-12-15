@@ -2,6 +2,7 @@ import Post from "../components/Post";
 
 interface PostData {
   category: string; // 카테고리
+  posterId: number;
   title: string; // 제목
   content: string; // 내용
   createdAt: string; // 작성 시간
@@ -34,9 +35,10 @@ export default function PostList({ posts }: PostListProps) {
 
   return (
     <div>
-      {processedPosts.map((post, index) => (
+      {processedPosts.map((post) => (
         <Post
-          key={index}
+          key={post.posterId}
+          id={post.posterId}
           category={post.category}
           title={post.title}
           content={post.content}
