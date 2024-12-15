@@ -5,7 +5,7 @@ import { AiFillAlert } from "react-icons/ai";
 import { MdFestival } from "react-icons/md";
 import { RiAlertFill } from "react-icons/ri";
 import { BsBasket3Fill } from "react-icons/bs";
-
+import { IoIosArrowBack } from "react-icons/io";
 // 카테고리 매핑 테이블
 const categoryMap: Record<string, { name: string; icon: JSX.Element }> = {
   ACCIDENT: {
@@ -33,7 +33,7 @@ interface PostData {
   contents: string;
   likeCount: number;
   img?: string;
-  views: number;
+  viewCount: number;
   createdAt: string;
 }
 
@@ -59,7 +59,7 @@ export default function PostDetail() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://172.16.108.26:8080/api/v1/poster/search`,
+          `http://172.16.108.55:8080/api/v1/poster/search`,
           {
             params: { id },
             headers: {
@@ -121,7 +121,7 @@ export default function PostDetail() {
           onClick={() => navigate(-1)}
           className="absolute left-4 text-gray-600 text-lg"
         >
-          ←
+          <IoIosArrowBack size={32} />
         </button>
         <h1 className="text-lg font-bold mx-auto">게시글 상세</h1>
       </header>
@@ -170,7 +170,9 @@ export default function PostDetail() {
 
         {/* 조회수 및 신고 버튼 */}
         <div className="flex items-center justify-between mt-5">
-          <div className="text-sm text-gray-500">조회수 {postData.views}회</div>
+          <div className="text-sm text-gray-500">
+            조회수 {postData.viewCount}회
+          </div>
           <button className="text-sm  font-medium">신고하기</button>
         </div>
 

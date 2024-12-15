@@ -34,7 +34,7 @@ export default function Board() {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          "http://172.16.108.26:8080/api/v1/poster/board",
+          "http://172.16.108.55:8080/api/v1/poster/board",
           {
             params: {
               category: "ACCIDENT",

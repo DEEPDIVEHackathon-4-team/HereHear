@@ -105,7 +105,7 @@ export default function LocationRegister() {
           <button
             className={`w-full py-3 font-bold rounded-md ${
               isLoading
-                ? "bg-gray-400 cursor-not-allowed"
+                ? "bg-gray-300 cursor-not-allowed"
                 : "bg-blue-500 text-white"
             }`}
             onClick={handleSave}
