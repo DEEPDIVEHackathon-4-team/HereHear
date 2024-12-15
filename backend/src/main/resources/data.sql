@@ -82,7 +82,7 @@ VALUES
 (5, '말티즈 주인분 찾았습니다!', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'MISSING', 0, 39),
 (6, '소방차가 지나가던데 무슨일 인가요?', 'Details for Event D', 25, 'imageD.jpg', CURRENT_TIMESTAMP, 37.388183, 127.121093, 4113511600, 3, 'RECENT_ISSUE', 0, 20),
 (7, '여기 위치 폭설로 가로수가 넘어져있네요. 조심하세요', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.310556, 127.095556, 4146500000, 4, 'ACCIDENT', 2, 20),
-(8, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299);
+(8, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299),
 (9, '오늘 판교역 무슨일 있나요?', 'Details for Event E', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.394539, 127.111016, 4113500000, 4, 'RECENT_ISSUE', 0, 299);
 
 INSERT INTO comment (id, poster_id, user_id, content, created_at)
