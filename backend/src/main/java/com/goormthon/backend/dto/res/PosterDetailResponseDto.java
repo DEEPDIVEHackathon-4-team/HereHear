@@ -21,12 +21,15 @@ public class PosterDetailResponseDto {
 	private String regionName;
 	private Double latitude;
 	private Double longitude;
+	private Long viewCount;
+	private Long likeCount;
+	private Long dislikeCount;
 	private List<CommentResponseDto> comments; // Add this field
 
 	@Builder
 	private PosterDetailResponseDto(Category category, String title, String content, LocalDateTime createdAt,
 		Integer commentCount, Long userId, String nickname, String regionName, Double latitude, Double longitude,
-		List<CommentResponseDto> comments) {
+		Long viewCount, Long likeCount, Long dislikeCount, List<CommentResponseDto> comments) {
 		this.category = category;
 		this.title = title;
 		this.content = content;
@@ -37,6 +40,9 @@ public class PosterDetailResponseDto {
 		this.regionName = regionName;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.viewCount = viewCount;
+		this.likeCount = likeCount;
+		this.dislikeCount = dislikeCount;
 		this.comments = comments;
 	}
 
@@ -53,6 +59,9 @@ public class PosterDetailResponseDto {
 			.longitude(poster.getLongitude())
 			.regionName(poster.getRegion().getName())
 			.comments(comments)
+			.viewCount(poster.getViewCount())
+			.likeCount(poster.getLikeCount())
+			.dislikeCount(poster.getDislikeCount())
 			.build();
 	}
 

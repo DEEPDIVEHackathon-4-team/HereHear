@@ -86,7 +86,6 @@ VALUES
 (9, '길냥이 아기고양이가 탄천에서 헤매요.', '탄천 근처에서 길냥이 아기고양이가 헤매고 있습니다. 주인을 찾는 중이니 혹시 아시는 분은 연락 주세요.', 5, 'imageE.jpg', CURRENT_TIMESTAMP, 37.343300, 127.097393, 4113511300, 4, 'MISSING', 0, 299),
 (10, '해커톤 이벤트가 있다고 하는데요??', '너무 재미있고 유익한 구름톤이 열린다고 하네요~~ 참여 많이 하세여', 40, 'image3.jpg', CURRENT_TIMESTAMP, 37.351717, 127.070510, 4146500000, 3, 'EVENT', 0, 399);
 
-
 INSERT INTO comment (id, poster_id, user_id, content, created_at)
 VALUES
 (1, 1, 1, '저희 아파트도 새벽 3시 좀 넘은시간에 정전이었어요', CURRENT_TIMESTAMP),

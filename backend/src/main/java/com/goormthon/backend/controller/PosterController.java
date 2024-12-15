@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/api/v1/poster")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173") // 프론트엔드 도메인 허용
+@CrossOrigin(origins = "http://172.16.108.55:5173") // 프론트엔드 도메인 허용
 @Tag(name = "Poster Controller", description = "map/board 화면 poster 조회 및 게시글수정삭제")
 public class PosterController {
 
