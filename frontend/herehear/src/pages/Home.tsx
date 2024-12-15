@@ -25,56 +25,66 @@ interface PostData {
 export default function Home() {
   const [search, setSearch] = useState("");
   const [posts, setPosts] = useState<PostData[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]); // 필터링된 게시물
+  const [filteredPosts, setFilteredPosts] = useState<PostData[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const [bottomSheetHeight, setBottomSheetHeight] = useState("40vh");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
 
   const categories = [
-    { name: "사건사고", icon: <AiFillAlert /> },
-    { name: "동네이벤트", icon: <MdFestival /> },
-    { name: "최근이슈", icon: <RiAlertFill /> },
-    { name: "분실/실종", icon: <BsBasket3Fill /> },
+    { key: "ACCIDENT", name: "사건사고", icon: <AiFillAlert /> },
+    { key: "EVENT", name: "동네이벤트", icon: <MdFestival /> },
+    { key: "RECENT_ISSUE", name: "최근이슈", icon: <RiAlertFill /> },
+    { key: "MISSING", name: "분실/실종", icon: <BsBasket3Fill /> },
   ];
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get(
-          "http://172.16.108.26:8080/api/v1/poster/map",
-          {
-            params: {
-              category: "",
-              latitude: 37,
-              longitude: 127,
-              distance: 4000,
-              page: 0,
-              size: 10,
-            },
-            headers: {
-              Accept: "*/*",
-            },
-          }
-        );
-        if (response.data?.data?.content) {
-          setPosts(response.data.data.content); // 받아온 데이터 설정
-        } else {
-          setPosts([]); // 데이터가 없을 경우 빈 배열 설정
+  const fetchPosts = async (category: string) => {
+    try {
+      const response = await axios.get(
+        "http://172.16.108.26:8080/api/v1/poster/map",
+        {
+          params: {
+            category: category,
+            latitude: 37,
+            longitude: 127,
+            distance: 4000,
+            page: 0,
+            size: 10,
+          },
+          headers: {
+            Accept: "*/*",
+          },
         }
-      } catch (error) {
-        console.error("게시물 데이터를 불러오는 중 오류 발생:", error);
-        setPosts([]); // 오류 발생 시 빈 배열로 초기화
+      );
+      if (response.data?.data?.content) {
+        setPosts(response.data.data.content);
+      } else {
+        setPosts([]);
       }
-    };
+    } catch (error) {
+      console.error("게시물 데이터를 불러오는 중 오류 발생:", error);
+      setPosts([]);
+    }
+  };
 
-    fetchPosts();
-  }, []);
+  useEffect(() => {
+    fetchPosts(selectedCategory);
+  }, [selectedCategory]);
+
+  const handleCategoryClick = (category: string) => {
+    if (selectedCategory === category) {
+      console.log(`Category deselected: ${category}`);
+      setSelectedCategory("");
+    } else {
+      console.log(`Category selected: ${category}`);
+      setSelectedCategory(category);
+    }
+  };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value;
     setSearch(keyword);
 
-    // 검색어로 게시물 필터링
     const filtered = posts.filter(
       (post) =>
         post.title.includes(keyword) ||
@@ -85,7 +95,6 @@ export default function Home() {
   };
 
   const handlePinClick = (latitude: number, longitude: number) => {
-    // 핀 클릭 시 해당 위치의 게시물만 필터링
     const locationPosts = posts.filter(
       (post) => post.latitude === latitude && post.longitude === longitude
     );
@@ -106,7 +115,6 @@ export default function Home() {
   return (
     <div className="center-content flex flex-col bg-white relative h-screen">
       <div className="relative flex-grow">
-        {/* 상단 검색 바 */}
         <div>
           <div className="absolute top-0 w-full z-10">
             <div className="mx-[20px] mt-[20px]">
@@ -118,13 +126,16 @@ export default function Home() {
                 onChange={handleSearchChange}
               />
             </div>
-
-            {/* 카테고리 버튼 */}
             <div className="flex gap-2 px-5 mt-[8px]">
-              {categories.map((category, index) => (
+              {categories.map((category) => (
                 <button
-                  key={index}
-                  className="flex items-center gap-1 px-[8px] py-[5px] bg-white text-[14px] text-gray-700 font-medium rounded-[16px] border border-gray-300"
+                  key={category.key}
+                  onClick={() => handleCategoryClick(category.key)}
+                  className={`flex items-center gap-1 px-[8px] py-[5px] rounded-[16px] border text-[14px] font-medium ${
+                    selectedCategory === category.key
+                      ? "bg-blue-500 text-white border-blue-500"
+                      : "bg-white text-gray-700 border-gray-300"
+                  }`}
                 >
                   {category.icon}
                   {category.name}
@@ -134,7 +145,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* 지도 */}
         <div className="absolute inset-0 z-0">
           <Map
             search={search}
@@ -147,7 +157,6 @@ export default function Home() {
           />
         </div>
 
-        {/* 바텀시트 */}
         {isBottomSheetOpen && (
           <div
             className="absolute bottom-0 left-0 w-full z-20 bg-white rounded-t-lg"
@@ -178,7 +187,6 @@ export default function Home() {
         )}
       </div>
 
-      {/* 하단 바 */}
       <footer className="h-20 w-full z-50 bg-white">
         <BottomBar />
       </footer>
